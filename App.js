@@ -8,6 +8,8 @@ import SignIn from './pages/Signin';
 // import Entypo from 'react-native-vector-icons/Entypo';
 import ForgotPassword from './pages/ForgotPassword';
 import RegistrationForm from './pages/SignUp';
+import searchPage from './pages/SearchPage';
+import HeartPage from './pages/HeartPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +55,8 @@ export default function App() {
   return (
     <NavigationContainer>
           <HomeStack.Navigator>
+              <HomeStack.Screen name="HeartPage" component={HeartPage} options={{headerShown: false}} />
+              <HomeStack.Screen name="searchPage" component={searchPage} options={{headerShown: false}} />
               <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
               <HomeStack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown: false}} />
               <HomeStack.Screen name="SignUp" component={RegistrationForm} options={{headerShown: false}} />
