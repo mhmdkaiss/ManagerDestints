@@ -8,10 +8,11 @@ import Input from '../components/Input'
 import Spinner from '../components/Spinner';
 
 class SignIn extends React.Component {  
-  state = {email:'mohamad_kaiss@hotmail.com',password:'12345678',error:'',loading:false};
+  state = {email:'',password:'',error:'',loading:false};
 
   navigatetoSignUp(){
       this.props.navigation.navigate('SignUp');
+      this.onLoginSuccess();
   }
 
   navigatetoForgotPass(){
@@ -25,12 +26,19 @@ class SignIn extends React.Component {
       firebase.auth().signInWithEmailAndPassword(email,password)
         .then(this.onLoginSuccess.bind(this))
         .catch(()=>{
-        firebase.auth().createUserWithEmailAndPassword(email,password)
-        .then(this.onLoginSuccess.bind(this))
-        .catch(()=>{
-          this.setState({error:'Authentication failed!',loading:false})
+          this.setState({error:'Signing In failed!',loading:false})
         });
-      });
+      ;
+  }
+
+  onLoginSuccess(){
+    this.setState({
+      email:'',
+      password:'',
+      error:'',
+      regId:'',
+      loading:false,
+    })
   }
 
   renderButton(){
@@ -46,15 +54,7 @@ class SignIn extends React.Component {
         );
   }
 
-  onLoginSuccess(){
-    this.setState({
-      email:'',
-      password:'',
-      error:'',
-      regId:'',
-      loading:false,
-    })
-  }
+  
 
   render(){
       return (
@@ -143,7 +143,7 @@ const styles= StyleSheet.create({
   }
   ,
   errorTextStyle:{
-    fontSize:20,
+    fontSize:15,
     alignSelf:'center',
     color:'red'
   }

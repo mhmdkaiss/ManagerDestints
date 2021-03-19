@@ -1,5 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image,TouchableOpacity} from 'react-native';
+import firebase from 'firebase';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -7,35 +8,32 @@ import Input from '../components/Input'
 import Spinner from '../components/Spinner';
 
 class RegistrationForm extends React.Component {  
-  state = {email:'',password:'',regId:'',error:'',loading:false,iconType:'Feather'};
+  state = {email:'',password:'',error:'',loading:false};
 
   navigateScreen(){
     this.props.navigation.navigate('SignIn');
   }
   
   onButtonPress(){
-    // const {email,password,regId} = this.state;
-    this.setState({error:'pressed',loading:false});
+    const {email,password} = this.state;
+    this.setState({loading:true});
 
-//     firebase.auth().signInWithEmailAndPassword(email,password)
-//   .then(this.onLoginSuccess.bind(this))
-//   .catch(()=>{
-//     firebase.auth().createUserWithEmailAndPassword(email,password)
-//     .then(this.onLoginSuccess.bind(this))
-//     .catch(()=>{
-//       this.setState({error:'Authentication failed!',loading:false})
-//     });
-//   });
-
+    firebase.auth().createUserWithEmailAndPassword(email,password)
+    .then(this.onSignUpSuccess.bind(this))
+    .catch(()=>{
+      this.setState({error:'Authentication failed!',loading:false})
+    });
+  
   }
-  iconTypeFun(){
-    // switch('feather'){
-    //   case 'feather':
-    //     return <Text>feather!</Text>;
-    //   default:
-    //     return <Text>nothing</Text>
-    // }
-    return <Text>feather</Text>
+
+  onSignUpSuccess(){
+    this.setState({
+      email:'',
+      password:'',
+      error:'',
+      regId:'',
+      loading:false,
+    })
   }
 
   renderButton(){
@@ -51,16 +49,6 @@ class RegistrationForm extends React.Component {
         );
   }
 
-//   onLoginSuccess(){
-//     this.setState({
-//       email:'',
-//       password:'',
-//       error:'',
-//       regId:'',
-//       loading:false,
-//     })
-//   }
-
   render(){
       return (
         
@@ -72,17 +60,7 @@ class RegistrationForm extends React.Component {
 
         <Text style={styles.titleStyle}>Sign Up</Text>
         <Card>
-            <CardSection> 
-                <Input 
-                iconName={'account-circle'}
-                iconColor={'purple'}
-                value={this.state.regId}
-                onChangeText={text=>this.setState({regId:text})}
-                placeholder={'Numero inscription'}
-              
-                />
-            </CardSection>
-
+           
             <CardSection>
             <Input 
                 iconName={'email-open'}
@@ -144,7 +122,7 @@ const styles= StyleSheet.create({
   }
   ,
   errorTextStyle:{
-    fontSize:20,
+    fontSize:15,
     alignSelf:'center',
     color:'red',
   }
