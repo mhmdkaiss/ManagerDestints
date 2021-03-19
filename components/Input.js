@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {TextInput, View, Text,StyleSheet} from 'react-native';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Input = ({iconName,iconColor,value,onChangeText,placeholder,secureTextEntry}) =>  {
   state = {text:''};
@@ -8,7 +8,7 @@ const Input = ({iconName,iconColor,value,onChangeText,placeholder,secureTextEntr
   
         return (
         <View style={containerstyle}>
-            {/* <MaterialCommunityIcons style={iconStyle} name={iconName} color={iconColor} size={20}/> */}
+            <MaterialCommunityIcons style={iconStyle} name={iconName} color={iconColor} size={20}/>
             
             <TextInput 
             style={inputstyle}

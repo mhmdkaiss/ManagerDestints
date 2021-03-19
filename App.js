@@ -2,6 +2,8 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import firebase from 'firebase';
+import {addfirebase} from './api/firebaseFuntions';
 import SignIn from './pages/Signin';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -28,7 +30,23 @@ function HomeStackScreen() {
 
 class App extends React.Component{
 
-  state={loggedIn:true};
+  state={loggedIn:false};
+
+  componentWillMount(){
+
+    //addfirebase configuration
+    addfirebase();
+
+    firebase.auth().onAuthStateChanged((user)=>{
+      if(user){
+        this.setState({loggedIn:true});
+        this.setState({user});
+        // console.log({user});
+      } else {
+        this.setState({loggedIn:false});
+      }
+    })
+  }
 
   renderContent(){
     switch(this.state.loggedIn){

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
+import firebase from 'firebase';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -7,8 +8,8 @@ import Input from '../components/Input'
 import Spinner from '../components/Spinner';
 
 class SignIn extends React.Component {  
-  state = {email:'',password:'',regId:'',error:'',loading:false,iconType:'Feather'};
-  
+  state = {email:'mohamad_kaiss@hotmail.com',password:'12345678',error:'',loading:false};
+
   navigatetoSignUp(){
       this.props.navigation.navigate('SignUp');
   }
@@ -18,19 +19,18 @@ class SignIn extends React.Component {
   }
 
   onButtonPress(){
-    // const {email,password,regId} = this.state;
-    this.setState({error:'pressed',loading:false});
+        const {email,password} = this.state;
+        this.setState({loading:true});
 
-//     firebase.auth().signInWithEmailAndPassword(email,password)
-//   .then(this.onLoginSuccess.bind(this))
-//   .catch(()=>{
-//     firebase.auth().createUserWithEmailAndPassword(email,password)
-//     .then(this.onLoginSuccess.bind(this))
-//     .catch(()=>{
-//       this.setState({error:'Authentication failed!',loading:false})
-//     });
-//   });
-
+      firebase.auth().signInWithEmailAndPassword(email,password)
+        .then(this.onLoginSuccess.bind(this))
+        .catch(()=>{
+        firebase.auth().createUserWithEmailAndPassword(email,password)
+        .then(this.onLoginSuccess.bind(this))
+        .catch(()=>{
+          this.setState({error:'Authentication failed!',loading:false})
+        });
+      });
   }
 
   renderButton(){
@@ -46,15 +46,15 @@ class SignIn extends React.Component {
         );
   }
 
-//   onLoginSuccess(){
-//     this.setState({
-//       email:'',
-//       password:'',
-//       error:'',
-//       regId:'',
-//       loading:false,
-//     })
-//   }
+  onLoginSuccess(){
+    this.setState({
+      email:'',
+      password:'',
+      error:'',
+      regId:'',
+      loading:false,
+    })
+  }
 
   render(){
       return (
@@ -71,8 +71,8 @@ class SignIn extends React.Component {
                 <Input 
                 iconName={'account-circle'}
                 iconColor={'purple'}
-                value={this.state.regId}
-                onChangeText={text=>this.setState({regId:text})}
+                value={this.state.email}
+                onChangeText={text=>this.setState({email:text})}
                 placeholder={'Numero inscription'}
               
                 />
