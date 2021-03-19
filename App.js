@@ -21,9 +21,11 @@ const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-        <HomeStack.Screen name="HeartPage" component={HeartPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="searchPage" component={searchPage} options={{headerShown: false}} />
-    </HomeStack.Navigator>
+        <HomeStack.Screen name="SearchPage" component={searchPage} options={{headerShown: false}} />
+        <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
+        <HomeStack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown: false}} />
+        <HomeStack.Screen name="SignUp" component={RegistrationForm} options={{headerShown: false}} />
+   </HomeStack.Navigator>
   );
 }
 
@@ -85,12 +87,12 @@ class App extends React.Component{
         );
       case false:
         return (
-            <HomeStack.Navigator>
-                <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
-                <HomeStack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown: false}} />
-                <HomeStack.Screen name="SignUp" component={RegistrationForm} options={{headerShown: false}} />
-            </HomeStack.Navigator>
-          );
+          <HomeStack.Navigator>
+              <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
+              <HomeStack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown: false}} />
+              <HomeStack.Screen name="SignUp" component={RegistrationForm} options={{headerShown: false}} />
+          </HomeStack.Navigator>
+            );
       default:
         return <Text>default page</Text>;
     }

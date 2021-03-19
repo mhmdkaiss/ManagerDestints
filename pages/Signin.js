@@ -6,9 +6,10 @@ import CardSection from '../components/CardSection';
 import Button from '../components/Button';
 import Input from '../components/Input'
 import Spinner from '../components/Spinner';
+import CheckBox from '@react-native-community/checkbox';
 
 class SignIn extends React.Component {  
-  state = {email:'',password:'',error:'',loading:false};
+  state = {email:'mohamad_kaiss@hotmail.com',password:'12345678',error:'',loading:false,toggleCheckBox:null};
 
   navigatetoSignUp(){
       this.props.navigation.navigate('SignUp');
@@ -32,13 +33,27 @@ class SignIn extends React.Component {
   }
 
   onLoginSuccess(){
-    this.setState({
-      email:'',
-      password:'',
-      error:'',
-      regId:'',
-      loading:false,
-    })
+    const {toggleCheckBox} = state;
+    console.log(toggleCheckBox);
+    if(toggleCheckBox==false){
+      this.setState({
+        email:'',
+        password:'',
+        error:'',
+        regId:'',
+        loading:false,
+      })
+    }
+    else if(toggleCheckBox==true){
+      this.setState({
+        email:this.state.email,
+        password:this.state.password,
+        error:'',
+        regId:'',
+        loading:false,
+      })
+    }
+    
   }
 
   renderButton(){
@@ -54,8 +69,7 @@ class SignIn extends React.Component {
         );
   }
 
-  
-
+    
   render(){
       return (
         
@@ -91,11 +105,16 @@ class SignIn extends React.Component {
             </CardSection> 
 
             <View style={styles.forgotPasswordContainer}>
-              <View style={{flex:1}}>
-                <Text style={{fontSize:11}}>Remember me</Text>
+              <View style={{flex:1,flexDirection:'row'}}>
+              <CheckBox
+              value={this.state.toggleCheckBox}
+              onValueChange={(newValue) => this.setState({toggleCheckBox:newValue}) }
+              // onChange={console.log(this.state.toggleCheckBox)}
+              />
+                <Text style={{fontSize:12,paddingTop:7}}>Remember me</Text>
               </View>
                 <TouchableOpacity onPress={this.navigatetoForgotPass.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12}}>Forgot Password?</Text>
+                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>Forgot Password?</Text>
                 </TouchableOpacity>
             </View>
 

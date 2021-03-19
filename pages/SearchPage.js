@@ -7,6 +7,7 @@ class searchPage extends React.Component {
 
   logout(){
     firebase.auth().signOut();
+    // this.props.navigation.navigate('SignIn');
   }
  
   render(){
