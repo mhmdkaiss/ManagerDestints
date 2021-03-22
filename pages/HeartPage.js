@@ -14,9 +14,9 @@ class HeartPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-              <HButton label={'Actualites'}/>
+              <HButton label={'Actualités'}/>
               <HButton label={'Documents'}/>
-              <HButton label={'Reparation'}/>
+              <HButton label={'Répartition'}/>
           </View>
         
         

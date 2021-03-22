@@ -79,7 +79,7 @@ class SignIn extends React.Component {
             <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
         </View>
         
-        <Text style={styles.titleStyle}>Sign In</Text>
+        <Text style={styles.titleStyle}>Connexion</Text>
         <Card>
             <CardSection> 
                 <Input 
@@ -111,10 +111,10 @@ class SignIn extends React.Component {
               onValueChange={(newValue) => this.setState({toggleCheckBox:newValue}) }
               // onChange={console.log(this.state.toggleCheckBox)}
               />
-                <Text style={{fontSize:12,paddingTop:7}}>Remember me</Text>
+                <Text style={{fontSize:12,paddingTop:7}}>Se souvenir de moi</Text>
               </View>
                 <TouchableOpacity onPress={this.navigatetoForgotPass.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>Forgot Password?</Text>
+                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>mot de passe oublié</Text>
                 </TouchableOpacity>
             </View>
 
@@ -126,9 +126,8 @@ class SignIn extends React.Component {
 
             </Card>
             <View style={styles.noAccountSignUp}>
-              <Text style={{fontSize:11}}>Dont have an account ? </Text>
                 <TouchableOpacity onPress={this.navigatetoSignUp.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12}}>Sign Up</Text>
+                     <Text style={{color:'blue',fontSize:12}}>Créer un compte</Text>
                 </TouchableOpacity>
             </View>
           </View>

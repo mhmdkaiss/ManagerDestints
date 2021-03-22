@@ -16,7 +16,7 @@ class searchPage extends React.Component {
         <View style={styles.containerForm}>
 
           <TouchableOpacity style={styles.logOutButton} onPress={this.logout.bind(this)}>
-            <Text style={{color:'white',fontSize:18}}>logOut</Text>
+            <Text style={{color:'white',fontSize:18}}>Déconnexion</Text>
           </TouchableOpacity>
 
           <View style={styles.imageContainer}>
@@ -24,7 +24,7 @@ class searchPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-              <HButton label={'Paiement cotistation'}/>
+              <HButton label={'Paiement cotisation'}/>
               <HButton label={'Attestation'}/>
               <HButton label={'Notifications'}/>
           </View>

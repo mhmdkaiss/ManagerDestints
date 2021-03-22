@@ -58,7 +58,7 @@ class RegistrationForm extends React.Component {
             <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
         </View>
 
-        <Text style={styles.titleStyle}>Sign Up</Text>
+        <Text style={styles.titleStyle}>Créer un compte</Text>
         <Card>
            
             <CardSection>
@@ -90,9 +90,9 @@ class RegistrationForm extends React.Component {
 
             </Card>
             <View style={styles.alreadyhaveAccount}>
-              <Text style={{fontSize:11}}>Already have an account ? </Text>
+              <Text style={{fontSize:11}}> Déjà inscrit? </Text>
               <TouchableOpacity onPress={this.navigateScreen.bind(this)}>
-                     <Text style={{color:'blue',fontSize:12}}>Sign In</Text>
+                     <Text style={{color:'blue',fontSize:12}}>Connexion</Text>
                 </TouchableOpacity>
               
             </View>
