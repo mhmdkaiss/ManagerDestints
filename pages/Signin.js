@@ -114,7 +114,7 @@ class SignIn extends React.Component {
                 <Text style={{fontSize:12,paddingTop:7}}>Se souvenir de moi</Text>
               </View>
                 <TouchableOpacity onPress={this.navigatetoForgotPass.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>mot de passe oublié</Text>
+                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>mot de passe oublié?</Text>
                 </TouchableOpacity>
             </View>
 
