@@ -1,5 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
+import firebase from 'firebase';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -7,7 +8,7 @@ import Input from '../components/Input'
 import Spinner from '../components/Spinner';
 
 class ForgotPassword extends React.Component {  
-  state = {email:'',password:'',regId:'',error:'',loading:false,iconType:'Feather'};
+  state = {email:'mohamad_kaiss@hotmail.com',password:'',error:'',loading:false};
   
   navigatetoSignIn(){
       this.props.navigation.navigate('SignIn');
@@ -18,18 +19,16 @@ class ForgotPassword extends React.Component {
   }
 
   onButtonPress(){
-    // const {email,password,regId} = this.state;
-    this.setState({error:'pressed',loading:false});
+    const {email,password} = this.state;
+    this.setState({error:'Vérifiez maintenant votre boîte de réception',loading:false});
 
-//     firebase.auth().signInWithEmailAndPassword(email,password)
-//   .then(this.onLoginSuccess.bind(this))
-//   .catch(()=>{
-//     firebase.auth().createUserWithEmailAndPassword(email,password)
-//     .then(this.onLoginSuccess.bind(this))
-//     .catch(()=>{
-//       this.setState({error:'Authentication failed!',loading:false})
-//     });
-//   });
+    var auth = firebase.auth();
+    
+    auth.sendPasswordResetEmail(email).then(function() {
+      // Email sent.
+    }).catch(function(error) {
+      // An error happened.
+    });
 
   }
 
@@ -46,15 +45,6 @@ class ForgotPassword extends React.Component {
         );
   }
 
-//   onLoginSuccess(){
-//     this.setState({
-//       email:'',
-//       password:'',
-//       error:'',
-//       regId:'',
-//       loading:false,
-//     })
-//   }
 
   render(){
       return (
@@ -78,7 +68,7 @@ class ForgotPassword extends React.Component {
             </CardSection> 
 
 
-            <Text style={styles.errorTextStyle}>{this.state.error}</Text>
+            {this.state.error?<Text style={styles.errorTextStyle}>{this.state.error}</Text>:null}
             
             <CardSection>
             {this.renderButton()}
@@ -117,9 +107,10 @@ const styles= StyleSheet.create({
   }
   ,
   errorTextStyle:{
-    fontSize:20,
+    fontSize:16,
     alignSelf:'center',
-    color:'red'
+    color:'red',
+    padding:8,
   }
   ,
   noAccountSignUp:{
