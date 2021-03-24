@@ -1,6 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image,TouchableOpacity} from 'react-native';
-import firebase from 'firebase';
+import auth from '@react-native-firebase/auth';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -18,7 +18,7 @@ class RegistrationForm extends React.Component {
     const {email,password} = this.state;
     this.setState({loading:true});
 
-    firebase.auth().createUserWithEmailAndPassword(email,password)
+    auth().createUserWithEmailAndPassword(email,password)
     .then(this.onSignUpSuccess.bind(this))
     .catch(()=>{
       this.setState({error:'Authentication failed!',loading:false})

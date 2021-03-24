@@ -1,6 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
-import firebase from 'firebase';
+import auth from '@react-native-firebase/auth';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -9,7 +9,7 @@ import Spinner from '../components/Spinner';
 import CheckBox from '@react-native-community/checkbox';
 
 class SignIn extends React.Component {  
-  state = {email:'mohamad_kaiss@hotmail.com',password:'12345678',error:'',loading:false,toggleCheckBox:null};
+  state = {email:'jane.doe@example.com',password:'12345678',error:'',loading:false,toggleCheckBox:null};
 
   navigatetoSignUp(){
       this.props.navigation.navigate('SignUp');
@@ -24,7 +24,7 @@ class SignIn extends React.Component {
         const {email,password} = this.state;
         this.setState({loading:true});
 
-      firebase.auth().signInWithEmailAndPassword(email,password)
+      auth().signInWithEmailAndPassword(email,password)
         .then(this.onLoginSuccess.bind(this))
         .catch(()=>{
           this.setState({error:'Signing In failed!',loading:false})

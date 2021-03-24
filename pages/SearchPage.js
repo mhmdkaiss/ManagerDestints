@@ -1,12 +1,12 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
-import firebase from 'firebase';
+import auth from '@react-native-firebase/auth';
 import HButton from '../components/heartPage/HButton';
 
 class searchPage extends React.Component {  
 
   logout(){
-    firebase.auth().signOut();
+    auth().signOut();
     // this.props.navigation.navigate('SignIn');
   }
  

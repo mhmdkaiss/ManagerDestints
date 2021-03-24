@@ -2,8 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import firebase from 'firebase';
-import {addfirebase} from './api/firebaseFuntions';
+import auth from '@react-native-firebase/auth';
 import SignIn from './pages/Signin';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +12,7 @@ import RegistrationForm from './pages/SignUp';
 import searchPage from './pages/SearchPage';
 import HeartPage from './pages/HeartPage';
 import { Text} from 'react-native';
+import LocationPage from './pages/LocationPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,10 +36,7 @@ class App extends React.Component{
 
   componentWillMount(){
 
-    //addfirebase configuration
-    addfirebase();
-
-    firebase.auth().onAuthStateChanged((user)=>{
+    auth().onAuthStateChanged((user)=>{
       if(user){
         this.setState({loggedIn:true});
         this.setState({user});
@@ -82,7 +79,7 @@ class App extends React.Component{
            >
             <Tab.Screen name="Home" component={searchPage} />
             <Tab.Screen name="Settings" component={HeartPage} />
-            <Tab.Screen name="Locations" component={searchPage} />
+            <Tab.Screen name="Locations" component={LocationPage} />
         </Tab.Navigator>
         );
       case false:

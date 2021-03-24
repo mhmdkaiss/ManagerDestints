@@ -1,6 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
-import firebase from 'firebase';
+import auth from '@react-native-firebase/auth';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -22,9 +22,7 @@ class ForgotPassword extends React.Component {
     const {email,password} = this.state;
     this.setState({error:'Vérifiez maintenant votre boîte de réception',loading:false});
 
-    var auth = firebase.auth();
-    
-    auth.sendPasswordResetEmail(email).then(function() {
+    auth().sendPasswordResetEmail(email).then(function() {
       // Email sent.
     }).catch(function(error) {
       // An error happened.
