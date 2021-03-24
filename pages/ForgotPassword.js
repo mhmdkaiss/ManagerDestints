@@ -8,7 +8,7 @@ import Input from '../components/Input'
 import Spinner from '../components/Spinner';
 
 class ForgotPassword extends React.Component {  
-  state = {email:'mohamad_kaiss@hotmail.com',password:'',error:'',loading:false};
+  state = {email:'mohamad_kaiss@hotmail.com',error:'',loading:false};
   
   navigatetoSignIn(){
       this.props.navigation.navigate('SignIn');
@@ -37,7 +37,7 @@ class ForgotPassword extends React.Component {
     
       return (
         <Button 
-            Label={'SEND RESET LINK'}
+            Label={'Réinitialiser le mot de passe'}
             onButtonPress={this.onButtonPress.bind(this)}
         />
         );

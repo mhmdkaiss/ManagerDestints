@@ -1,33 +1,42 @@
 import React from 'react';
-import {View,Text, StyleSheet,Image} from 'react-native';
-import firebase from 'firebase';
+import {View,Text, StyleSheet,Image, FlatList} from 'react-native';
+import database from '@react-native-firebase/database';
 
 
 class LocationPage extends React.Component {  
 
-    state={type:''};
+    state={dataList:[],type:'',envoyerMail:null,envoyerPoste:null};
+
+    // componentWillMount(){
+    //     this.readfromDB();
+    // }
 
     // readfromDB(){
-    //     // firebase.database()
-    //     // .ref('/users/1234 ')
-    //     // .set({
-    //     //   type: 'test',
-    //     //   envoyerMail: true,
-    //     //   envoyerPoste:false,
-    //     // });
-    //     const {type} = this.state;
-      
-    //     firebase.database()
+    //     database()
     //     .ref('/users')
     //     .on('value', snapshot => {
-    //       console.log(snapshot.toJSON()['123'].type);
-    //     });
-      
-    //     return type;
-    //   }
+           
+    //             const notes = [];
+    //             snapshot.forEach((child) => {
+    //               notes.push({
+    //                 type: child.val().type,
+    //                 envoyerMail: child.val().envoyerMail,
+    //                 envoyerPoste: child.val().envoyerPoste,
+    //                 id: child.key,
+    //                 email:child.val().email,
+    //                 // name:Children.val().name,
+    //               });
+    //             });
+    //             this.setState({dataList: notes});
+
+    //             // console.log(notes);
+    //           });
+        
+    // }
  
   render(){
-      return (
+
+    return (
         
         <View style={styles.containerForm}>
 
@@ -37,7 +46,21 @@ class LocationPage extends React.Component {
           
           <View style={styles.PublicitesStyleContainer}>
              
-             {/* <Text>{this.readfromDB()}</Text> */}
+{/*         
+            <FlatList
+                data={this.state.dataList}
+                renderItem={({item,index})=>{
+                    return(
+                        <View style={styles.attestationtypeContainer}>
+                            <Text>{item.id}</Text>
+                            <Text>{item.type}</Text>
+                            {item.envoyerMail?<Text>attestation par Mail</Text>:null}
+                            {item.envoyerPoste?<Text>attestation par Poste</Text>:null}
+                            <Text>{item.email}</Text>
+                        </View>
+                    ) 
+                }}
+            /> */}
 
           </View>
         
@@ -67,6 +90,12 @@ const styles= StyleSheet.create({
     flex:1,
     justifyContent:'center',
     alignItems:'center',
+  }
+  ,
+  attestationtypeContainer:{
+      backgroundColor:'grey',
+      margin:10,
+      padding:10,
   }
 
 })

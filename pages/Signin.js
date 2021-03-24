@@ -9,7 +9,7 @@ import Spinner from '../components/Spinner';
 import CheckBox from '@react-native-community/checkbox';
 
 class SignIn extends React.Component {  
-  state = {email:'jane.doe@example.com',password:'12345678',error:'',loading:false,toggleCheckBox:null};
+  state = {email:'mohamad_kaiss@hotmail.com',password:'12345678',error:'',loading:false,toggleCheckBox:null};
 
   navigatetoSignUp(){
       this.props.navigation.navigate('SignUp');
@@ -63,7 +63,7 @@ class SignIn extends React.Component {
     
       return (
         <Button 
-            Label={'LOG IN'}
+            Label={'Se connecter'}
             onButtonPress={this.onButtonPress.bind(this)}
         />
         );
