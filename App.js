@@ -12,9 +12,10 @@ import RegistrationForm from './pages/SignUp';
 import searchPage from './pages/SearchPage';
 import HeartPage from './pages/HeartPage';
 import { Text} from 'react-native';
-import LocationPage from './pages/LocationPage';
+import PublicitePage from './pages/PublicitePage';
 import AttestationPage from './pages/Attestation';
 import ActualitePage from './pages/ActualitePage';
+import DocumentationPage from './pages/Documentation';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,7 @@ function HeartStackScreen() {
     <HomeStack.Navigator>
         <HomeStack.Screen name="HeartPage" component={HeartPage} options={{headerShown: false}} />
         <HomeStack.Screen name="ActualitePage" component={ActualitePage} options={{headerShown: false}} />
+        <HomeStack.Screen name="DocumentationPage" component={DocumentationPage} options={{headerShown: false}} />
    </HomeStack.Navigator>
   );
 }
@@ -89,7 +91,7 @@ class App extends React.Component{
            >
             <Tab.Screen name="Home" component={SearchStackScreen} />
             <Tab.Screen name="Settings" component={HeartStackScreen} />
-            <Tab.Screen name="Locations" component={LocationPage} />
+            <Tab.Screen name="Locations" component={PublicitePage} />
         </Tab.Navigator>
         );
       case false:

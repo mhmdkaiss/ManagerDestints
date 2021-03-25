@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 
 
-class LocationPage extends React.Component {  
+class PublicitePage extends React.Component {  
 
   state = {titleMsg:'',message:''};
 
@@ -93,5 +93,5 @@ const styles= StyleSheet.create({
 })
 
 
-export default LocationPage;
+export default PublicitePage;
 
