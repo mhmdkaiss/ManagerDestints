@@ -5,8 +5,8 @@ import HButton from '../components/heartPage/HButton';
 
 class searchPage extends React.Component {  
 
-  navigatetoNotifications(){
-    this.props.navigation.navigate('Notifications');
+  navigatetoAttestation(){
+    this.props.navigation.navigate('Attestation');
   }
 
   logout(){
@@ -29,8 +29,8 @@ class searchPage extends React.Component {
           
           <View style={styles.PublicitesStyleContainer}>
               <HButton label={'Paiement cotisation'} />
-              <HButton label={'Attestation'}/>
-              <HButton label={'Notifications'} onButtonPress={this.navigatetoNotifications.bind(this)}/>
+              <HButton label={'Attestation'} onButtonPress={this.navigatetoAttestation.bind(this)}/>
+              <HButton label={'Notifications'} />
           </View>
         
         

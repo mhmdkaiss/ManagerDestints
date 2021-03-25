@@ -3,7 +3,7 @@ import {View,Text, StyleSheet,Image, FlatList} from 'react-native';
 import database from '@react-native-firebase/database';
 
 
-class NotificationsPage extends React.Component {  
+class AttestationPage extends React.Component {  
 
     state={dataList:[],type:'',envoyerMail:null,envoyerPoste:null};
 
@@ -111,5 +111,5 @@ const styles= StyleSheet.create({
 })
 
 
-export default NotificationsPage;
+export default AttestationPage;
 

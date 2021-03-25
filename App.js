@@ -13,7 +13,7 @@ import searchPage from './pages/SearchPage';
 import HeartPage from './pages/HeartPage';
 import { Text} from 'react-native';
 import LocationPage from './pages/LocationPage';
-import NotificationsPage from './pages/Notifications';
+import AttestationPage from './pages/Attestation';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +24,7 @@ function SearchStackScreen() {
     <HomeStack.Navigator>
         <HomeStack.Screen name="SearchPage" component={searchPage} options={{headerShown: false}} />
         <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
-        <HomeStack.Screen name="Notifications" component={NotificationsPage} options={{headerShown: false}} />
+        <HomeStack.Screen name="Attestation" component={AttestationPage} options={{headerShown: false}} />
    </HomeStack.Navigator>
   );
 }
