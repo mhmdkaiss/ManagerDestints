@@ -1,35 +1,50 @@
 import React from 'react';
-import {View, StyleSheet,Image, Button} from 'react-native';
+import {View, StyleSheet,Image, Button, Platform} from 'react-native';
 import database from '@react-native-firebase/database';
 import Header from '../components/Header';
-import DocumentPicker from 'react-native-document-picker';
+import { utils } from '@react-native-firebase/app';
 
 
 class DocumentationPage extends React.Component {  
 
 //   state = {titleMsg:'',message:''};
 
-  async chooseFile() {
-   
-      try {
-        const res = await DocumentPicker.pick({
-          type: [DocumentPicker.types.images],
-        });
-        console.log(
-          res.uri,
-          res.type, // mime type
-          res.name,
-          res.size
-        );
-      } catch (err) {
-        if (DocumentPicker.isCancel(err)) {
-          // User cancelled the picker, exit any dialogs or menus and move on
-        } else {
-          throw err;
-        }
-      }
-    
-  }
+  // async chooseFile() {
+  //     try {
+  //       const file = await DocumentPicker.pick({
+  //         type: [DocumentPicker.types.allFiles],
+  //       });
+  //       // const path = await normalizePath(file.uri);
+  //       // console.log(path);
+  //       // console.log(
+  //       //   file.uri,
+  //       //   file.type, // mime type
+  //       //   file.name,
+  //       //   file.size
+  //       // );
+  //     } catch (err) {
+  //       if (DocumentPicker.isCancel(err)) {
+  //         // User cancelled the picker, exit any dialogs or menus and move on
+  //       } else {
+  //         throw err;
+  //       }
+  //     }
+  // }
+
+  // async normalizePath(path) {
+  //   if(Platform.OS==='os' || Platform.OS==='android'){
+  //     const filePrefix='file://';
+  //     if(path.startsWith(filePrefix)){
+  //       path= path.substring(filePrefix.length);
+  //       try{
+  //         path = decodeURI(path);
+  //       }catch(e){
+
+  //       }
+  //     }
+  //   }
+  //   return path;
+  // }
   
  
   render(){
@@ -50,7 +65,12 @@ class DocumentationPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-            <Button title={"choose pic"} onPress={()=>this.chooseFile()}/>
+            <Button title={"choose pic"} onPress={async () => {
+          // path to existing file on filesystem
+          const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/black-t-shirt-sm.png`;
+          // uploads file
+          await reference.putFile(pathToFile);
+        }}/>
              
           
           </View>
