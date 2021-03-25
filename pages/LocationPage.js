@@ -2,6 +2,8 @@ import React from 'react';
 import {View,Text, StyleSheet,Image, FlatList, TextInput} from 'react-native';
 import database from '@react-native-firebase/database';
 import Header from '../components/Header';
+import Button from '../components/Button';
+import auth from '@react-native-firebase/auth';
 
 
 class LocationPage extends React.Component {  
@@ -10,19 +12,19 @@ class LocationPage extends React.Component {
 
     sendData() {
       const {titleMsg,message} = this.state;
-  
-      console.log(auth().currentUser);
-  
+
+      if(titleMsg!='' && message!='')
+      {
         database()
-      .ref(`/users/${auth().currentUser.uid}`)
-      .set({
-        id: auth().currentUser.uid,
-        type: typeofAttestation,
-        envoyerMail: envoyerMail,
-        envoyerPoste:envoyerPoste,
-        email:auth().currentUser.email,
-        name:auth().currentUser.displayName,
-      });
+        .ref(`/Publicities/`)
+        .push({
+          // id: auth().currentUser.uid,
+          titleMsg: titleMsg,
+          message: message,
+        });
+      }
+      
+      this.setState({titleMsg:'',message:''});
     }
  
   render(){
@@ -40,9 +42,10 @@ class LocationPage extends React.Component {
           <View style={styles.PublicitesStyleContainer}>
              
             <Text>Send Title Message:</Text>
-            <TextInput style={styles.textInput} value={this.state.titleMsg} onChange={(title)=>this.setState({titleMsg:title})}/>
+            <TextInput style={styles.textInput} value={this.state.titleMsg} onChangeText={(title)=>this.setState({titleMsg:title})}/>
             <Text>Send Message:</Text>
-            <TextInput style={styles.textInput} value={this.state.message} onChange={(title)=>this.setState({message:title})}/>
+            <TextInput style={styles.textInput} value={this.state.message} onChangeText={(title)=>this.setState({message:title})}/>
+            <Button Label={'Envoyer Pub'} onButtonPress={this.sendData.bind(this)}/>
 
           </View>
         
