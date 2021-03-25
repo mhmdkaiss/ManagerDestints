@@ -2,8 +2,6 @@ import React from 'react';
 import {View, StyleSheet,Image, Button} from 'react-native';
 import database from '@react-native-firebase/database';
 import Header from '../components/Header';
-import storage from '@react-native-firebase/storage';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 
 class DocumentationPage extends React.Component {  
@@ -20,9 +18,6 @@ class DocumentationPage extends React.Component {
     //     ImagePicker
     // }
 
-    const reference = storage().ref('gs://manager-3ef2a.appspot.com/pdfs');
-
-    
 
     return (
         
