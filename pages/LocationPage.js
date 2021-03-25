@@ -1,38 +1,29 @@
 import React from 'react';
-import {View,Text, StyleSheet,Image, FlatList} from 'react-native';
+import {View,Text, StyleSheet,Image, FlatList, TextInput} from 'react-native';
 import database from '@react-native-firebase/database';
+import Header from '../components/Header';
 
 
 class LocationPage extends React.Component {  
 
-    state={dataList:[],type:'',envoyerMail:null,envoyerPoste:null};
+  state = {titleMsg:'',message:''};
 
-    // componentWillMount(){
-    //     this.readfromDB();
-    // }
-
-    // readfromDB(){
-    //     database()
-    //     .ref('/users')
-    //     .on('value', snapshot => {
-           
-    //             const notes = [];
-    //             snapshot.forEach((child) => {
-    //               notes.push({
-    //                 type: child.val().type,
-    //                 envoyerMail: child.val().envoyerMail,
-    //                 envoyerPoste: child.val().envoyerPoste,
-    //                 id: child.key,
-    //                 email:child.val().email,
-    //                 // name:Children.val().name,
-    //               });
-    //             });
-    //             this.setState({dataList: notes});
-
-    //             // console.log(notes);
-    //           });
-        
-    // }
+    sendData() {
+      const {titleMsg,message} = this.state;
+  
+      console.log(auth().currentUser);
+  
+        database()
+      .ref(`/users/${auth().currentUser.uid}`)
+      .set({
+        id: auth().currentUser.uid,
+        type: typeofAttestation,
+        envoyerMail: envoyerMail,
+        envoyerPoste:envoyerPoste,
+        email:auth().currentUser.email,
+        name:auth().currentUser.displayName,
+      });
+    }
  
   render(){
 
@@ -40,27 +31,18 @@ class LocationPage extends React.Component {
         
         <View style={styles.containerForm}>
 
+          <Header headerText={'Publicity'}/>
+
           <View style={styles.imageContainer}>
               <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
              
-{/*         
-            <FlatList
-                data={this.state.dataList}
-                renderItem={({item,index})=>{
-                    return(
-                        <View style={styles.attestationtypeContainer}>
-                            <Text>{item.id}</Text>
-                            <Text>{item.type}</Text>
-                            {item.envoyerMail?<Text>attestation par Mail</Text>:null}
-                            {item.envoyerPoste?<Text>attestation par Poste</Text>:null}
-                            <Text>{item.email}</Text>
-                        </View>
-                    ) 
-                }}
-            /> */}
+            <Text>Send Title Message:</Text>
+            <TextInput style={styles.textInput} value={this.state.titleMsg} onChange={(title)=>this.setState({titleMsg:title})}/>
+            <Text>Send Message:</Text>
+            <TextInput style={styles.textInput} value={this.state.message} onChange={(title)=>this.setState({message:title})}/>
 
           </View>
         
@@ -96,6 +78,14 @@ const styles= StyleSheet.create({
       backgroundColor:'grey',
       margin:10,
       padding:10,
+  }
+  ,
+  textInput:{
+    backgroundColor:'grey',
+    color:'white',
+    width:280,
+    height:40,
+    marginBottom:20,
   }
 
 })
