@@ -9,27 +9,27 @@ class DocumentationPage extends React.Component {
 
 //   state = {titleMsg:'',message:''};
 
-  // async chooseFile() {
-  //     try {
-  //       const file = await DocumentPicker.pick({
-  //         type: [DocumentPicker.types.allFiles],
-  //       });
-  //       // const path = await normalizePath(file.uri);
-  //       // console.log(path);
-  //       // console.log(
-  //       //   file.uri,
-  //       //   file.type, // mime type
-  //       //   file.name,
-  //       //   file.size
-  //       // );
-  //     } catch (err) {
-  //       if (DocumentPicker.isCancel(err)) {
-  //         // User cancelled the picker, exit any dialogs or menus and move on
-  //       } else {
-  //         throw err;
-  //       }
-  //     }
-  // }
+  async chooseFile() {
+      // try {
+      //   const file = await DocumentPicker.pick({
+      //     type: [DocumentPicker.types.allFiles],
+      //   });
+      //   // const path = await normalizePath(file.uri);
+      //   // console.log(path);
+      //   // console.log(
+      //   //   file.uri,
+      //   //   file.type, // mime type
+      //   //   file.name,
+      //   //   file.size
+      //   // );
+      // } catch (err) {
+      //   if (DocumentPicker.isCancel(err)) {
+      //     // User cancelled the picker, exit any dialogs or menus and move on
+      //   } else {
+      //     throw err;
+      //   }
+      // }
+  }
 
   // async normalizePath(path) {
   //   if(Platform.OS==='os' || Platform.OS==='android'){
@@ -65,12 +65,7 @@ class DocumentationPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-            <Button title={"choose pic"} onPress={async () => {
-          // path to existing file on filesystem
-          const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/black-t-shirt-sm.png`;
-          // uploads file
-          await reference.putFile(pathToFile);
-        }}/>
+            <Button title={"choose pic"} onPress={this.chooseFile.bind(this)}/>
              
           
           </View>
