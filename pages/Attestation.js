@@ -51,6 +51,7 @@ class AttestationPage extends React.Component {
         
             <FlatList
                 data={this.state.dataList}
+                keyExtractor={(list)=>list.id}
                 renderItem={({item,index})=>{
                     return(
                         <View style={attestationtypeContainer}>
