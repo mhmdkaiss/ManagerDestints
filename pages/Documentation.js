@@ -2,15 +2,35 @@ import React from 'react';
 import {View, StyleSheet,Image, Button} from 'react-native';
 import database from '@react-native-firebase/database';
 import Header from '../components/Header';
+import DocumentPicker from 'react-native-document-picker';
 
 
 class DocumentationPage extends React.Component {  
 
 //   state = {titleMsg:'',message:''};
 
-    chooseImage(){
-        console.log('choose image');
-    }
+  async chooseFile() {
+   
+      try {
+        const res = await DocumentPicker.pick({
+          type: [DocumentPicker.types.images],
+        });
+        console.log(
+          res.uri,
+          res.type, // mime type
+          res.name,
+          res.size
+        );
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          // User cancelled the picker, exit any dialogs or menus and move on
+        } else {
+          throw err;
+        }
+      }
+    
+  }
+  
  
   render(){
 
@@ -30,7 +50,7 @@ class DocumentationPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-            <Button title={"choose pic"} onPress={this.chooseImage.bind(this)}/>
+            <Button title={"choose pic"} onPress={()=>this.chooseFile()}/>
              
           
           </View>
