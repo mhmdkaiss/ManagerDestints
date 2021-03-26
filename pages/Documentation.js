@@ -2,7 +2,9 @@
 // https://aboutreact.com/react-native-firebase-cloud-storage/
 
 // Import React in our code
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
+
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 // Import all the components we are going to use
 import {
@@ -12,6 +14,8 @@ import {
   View,
   ActivityIndicator,
   TouchableOpacity,
+  FlatList,
+  Linking,
 } from "react-native";
 
 // Firebase Storage to upload file
@@ -19,12 +23,17 @@ import storage from "@react-native-firebase/storage";
 // To pick the file from local file system
 import DocumentPicker from "react-native-document-picker";
 import RNFetchBlob from 'rn-fetch-blob'
+import Header from '../components/Header';
+
 
 const DocumentationPage = () => {
   // State Defination
   const [loading, setLoading] = useState(false);
   const [filePath, setFilePath] = useState({});
   const [process, setProcess] = useState("");
+
+  const [refresh,setrefresh] = useState('');
+
 
   const _chooseFile = async () => {
     // Opening Document Picker to select one file
@@ -66,6 +75,16 @@ const DocumentationPage = () => {
       alert(`Errorrr-> ${error}`);
     }
     setLoading(false);
+
+     //refresh
+     if(refresh==''){
+      setrefresh('refreshed');
+      console.log(refresh);
+    }
+    if(refresh=="refreshed"){
+      setrefresh('');
+      console.log(refresh);
+    }
   };
 
   const uploadFileToFirebaseStorage = async (result,filePath) => {
@@ -102,6 +121,102 @@ const DocumentationPage = () => {
 
   }
 
+
+  // Viewing files
+  const [listData, setListData] = useState([]);
+  const [loadingV, setLoadingV] = useState(true);
+
+  useEffect(() => {
+    listFilesAndDirectories("");
+  }, [refresh]);
+
+  const listFilesAndDirectories = (pageToken) => {
+    const reference = storage().ref("pdfs");
+    reference.list({ pageToken }).then((result) => {
+      result.items.forEach((ref) => {
+        // console.log("ref  ->>  ", JSON.stringify(ref));
+      });
+
+      if (result.nextPageToken) {
+        return listFilesAndDirectories(
+          reference,
+          result.nextPageToken
+        );
+      }
+      setListData(result.items);
+      setLoadingV(false);
+    });
+  };
+
+  
+  const deleteitem = async (item) => {
+      // Create a reference to the file to delete
+      const desertRef = storage().ref().child(`pdfs/${item}`);
+
+      // Delete the file
+      desertRef.delete().then(() => {
+        // File deleted successfully
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+      
+      //refresh
+      if(refresh==''){
+        setrefresh('refreshed');
+        console.log(refresh);
+      }
+      if(refresh=="refreshed"){
+        setrefresh('');
+        console.log(refresh);
+      }
+      
+    }
+
+  const ItemView = ({ item }) => {  
+
+    return (
+      // FlatList Item
+      <View style={{ padding: 10 }}>
+        
+        <View style={styles.telechargeBtn} >
+            <Text
+                style={styles.itemname}
+            >
+                 File Name: {item.name}
+            </Text>
+            <TouchableOpacity onPress={() => deleteitem(item.name)}>
+              <MaterialIcons name={'delete'} style={styles.iconStyle} size={22}/>
+            </TouchableOpacity>
+                       
+        </View>
+      </View>
+    );
+  };
+
+  const ItemSeparatorView = () => {
+    return (
+      // FlatList Item Separator
+      <View
+        style={{
+          height: 0.5,
+          width: "100%",
+          backgroundColor: "#C8C8C8",
+        }}
+      />
+    );
+  };
+
+  const getItem = async (fullPath) => {
+    const url = await storage()
+      .ref(fullPath)
+      .getDownloadURL()
+      .catch((e) => {
+        console.error(e);
+      });
+    Linking.openURL(url);
+    console.log(url);
+  };
+
   return (
     <>
       {loading ? (
@@ -109,15 +224,9 @@ const DocumentationPage = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1,backgroundColor:'white'}}>
           <View style={styles.container}>
-            <Text style={styles.titleText}>
-              Upload Input Text as File on FireStorage
-            </Text>
-            <View style={styles.container}>
-              <Text>
-                Choose File and Upload to FireStorage
-              </Text>
+              
               <Text>{process}</Text>
               <TouchableOpacity
                 activeOpacity={0.5}
@@ -125,7 +234,8 @@ const DocumentationPage = () => {
                 onPress={_chooseFile}
               >
                 <Text style={styles.buttonTextStyle}>
-                  Choose Image (Current Selected:{" "}
+                Choisir le fichier {"\n"}
+                (actuelle sélectionnée:{" "}
                   {Object.keys(filePath).length == 0
                     ? 0
                     : 1}
@@ -137,17 +247,29 @@ const DocumentationPage = () => {
                 onPress={_uploadFile}
               >
                 <Text style={styles.buttonTextStyle}>
-                  Upload File on FireStorage
+                  Insérer le fichier
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.footerHeading}>
-              React Native Firebase Cloud Storage
-            </Text>
-            <Text style={styles.footerText}>
-              www.aboutreact.com
-            </Text>
-          </View>
+
+            
+                {loadingV ? (
+                  <View style={styles.container}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                  </View>
+                ) : (
+                  <FlatList
+                  style={{backgroundColor:'white'}}
+                    data={listData}
+                    //data defined in constructor
+                    ItemSeparatorComponent={ItemSeparatorView}
+                    //Item Separator View
+                    renderItem={ItemView}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                )}
+    
+            
         </SafeAreaView>
       )}
     </>
@@ -158,10 +280,10 @@ export default DocumentationPage;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     padding: 10,
+    paddingBottom:30,
   },
   titleText: {
     fontSize: 20,
@@ -171,10 +293,11 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     alignItems: "center",
-    backgroundColor: "orange",
+    backgroundColor: "#4548E9",
     padding: 10,
-    width: 300,
+    width: 200,
     marginTop: 16,
+    borderRadius:10
   },
   buttonTextStyle: {
     color: "white",
@@ -190,4 +313,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "grey",
   },
+
+  ListContainer:{
+    backgroundColor: "#fff",
+    alignItems: "center",
+    padding: 7,
+    backgroundColor:'red'
+  }
+  ,
+  telechargeBtn:{
+    flexDirection:'row',
+    paddingLeft:5,
+    paddingRight:5,
+  },
+  iconStyle:{
+      padding:4,
+  },
+  itemname:{
+      fontSize:15,
+      flex:1,
+}
 });
