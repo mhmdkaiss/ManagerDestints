@@ -6,7 +6,6 @@ import auth from '@react-native-firebase/auth';
 import SignIn from './pages/Signin';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
 import ForgotPassword from './pages/ForgotPassword';
 import RegistrationForm from './pages/SignUp';
 import searchPage from './pages/SearchPage';

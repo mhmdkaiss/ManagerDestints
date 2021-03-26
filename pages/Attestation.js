@@ -1,6 +1,7 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, FlatList} from 'react-native';
 import database from '@react-native-firebase/database';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
 class AttestationPage extends React.Component {  
@@ -56,11 +57,19 @@ class AttestationPage extends React.Component {
                     return(
                         <View style={attestationtypeContainer}>
 
-                            <Text style={text}>Medecine avec l'email: {item.email}</Text>
+                            <Text style={text}>Email 
+                            <Entypo name={'arrow-right'} size={16}/>{" "}
+                             {item.email}</Text>
                             {/* <Text style={text}>{item.id}</Text> */}
-                            <Text style={text}>requested attestation type : {item.type}</Text>
-                            {item.envoyerMail?<Text style={text}> => par Mail</Text>:null}
-                            {item.envoyerPoste?<Text style={text}> => par Poste</Text>:null}
+                            <Text style={text}>Attestation demandé 
+                            <Entypo name={'arrow-right'} size={16}/>{" "}
+                             {item.type}</Text>
+                            {item.envoyerMail?<Text style={text}>
+                            <Entypo name={'check'}/>
+                             {" "}par Mail</Text>:null}
+                            {item.envoyerPoste?<Text style={text}>
+                            <Entypo name={'check'}/>
+                            {" "}par Poste</Text>:null}
                             
                         </View>
                     ) 
