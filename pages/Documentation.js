@@ -55,22 +55,10 @@ const DocumentationPage = () => {
 
       // Create Reference
       const path = filePath.uri;
-      // console.log(path);
-      // console.log(filePath);
+      
       const result = await RNFetchBlob.fs.readFile(path,'base64');
       uploadFileToFirebaseStorage(result,filePath);
       
-
-      // Put File
-      // await reference.putFile(
-      //   result
-      // );
-      // You can do different operation with task
-      // task.pause();
-      // task.resume();
-      // task.cancel();
-
-     
      
       setFilePath({});
     } catch (error) {
