@@ -23,6 +23,7 @@ class ActualitePage extends React.Component {
         });
       }
       
+      alert('Actualité envoyer');
       this.setState({titleMsg:'',message:''});
     }
  
@@ -32,7 +33,7 @@ class ActualitePage extends React.Component {
         
         <View style={styles.containerForm}>
 
-          <Header headerText={'Actualités'}/>
+          <Header Label={'Actualités'}/>
 
           <View style={styles.imageContainer}>
               <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>

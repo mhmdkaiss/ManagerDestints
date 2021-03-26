@@ -16,6 +16,8 @@ import {
   TouchableOpacity,
   FlatList,
   Linking,
+  RefreshControl,
+  Alert
 } from "react-native";
 
 // Firebase Storage to upload file
@@ -23,7 +25,6 @@ import storage from "@react-native-firebase/storage";
 // To pick the file from local file system
 import DocumentPicker from "react-native-document-picker";
 import RNFetchBlob from 'rn-fetch-blob'
-import Header from '../components/Header';
 
 
 const DocumentationPage = () => {
@@ -32,7 +33,8 @@ const DocumentationPage = () => {
   const [filePath, setFilePath] = useState({});
   const [process, setProcess] = useState("");
 
-  const [refresh,setrefresh] = useState('');
+  const [refresh,setrefresh] = useState(false);
+  const [deleteitem,setdeleteitem] = useState('');
 
 
   const _chooseFile = async () => {
@@ -47,11 +49,11 @@ const DocumentationPage = () => {
     } catch (error) {
       setFilePath({});
       // If user canceled the document selection
-      alert(
-        DocumentPicker.isCancel(error)
-          ? "Canceled"
-          : "Unknown Error: " + JSON.stringify(error)
-      );
+      // alert(
+      //   DocumentPicker.isCancel(error)
+      //     ? "Canceled"
+      //     : "Unknown Error: " + JSON.stringify(error)
+      // );
     }
   };
 
@@ -76,15 +78,21 @@ const DocumentationPage = () => {
     }
     setLoading(false);
 
-     //refresh
-     if(refresh==''){
-      setrefresh('refreshed');
-      console.log(refresh);
+    //add delay
+
+
+    //refresh
+     if(deleteitem==''){
+      setdeleteitem('refreshed');
+      console.log(deleteitem);
     }
-    if(refresh=="refreshed"){
-      setrefresh('');
-      console.log(refresh);
+    if(deleteitem=="refreshed"){
+      setdeleteitem('');
+      console.log(deleteitem);
     }
+
+    Alert.alert("Attention", "Tirer vers le bas pour mettre à jour");
+    
   };
 
   const uploadFileToFirebaseStorage = async (result,filePath) => {
@@ -97,13 +105,13 @@ const DocumentationPage = () => {
     // Observe state change events such as progress, pause, and resume
     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
     var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    console.log('Upload is ' + progress + '% done');
+    // console.log('Upload is ' + progress + '% done');
     switch (snapshot.state) {
       case storage.TaskState.PAUSED: // or 'paused'
-        console.log('Upload is paused');
+        // console.log('Upload is paused');
         break;
       case  storage.TaskState.RUNNING: // or 'running'
-        console.log('Upload is running');
+        // console.log('Upload is running');
         break;
     }
   }, 
@@ -128,9 +136,11 @@ const DocumentationPage = () => {
 
   useEffect(() => {
     listFilesAndDirectories("");
-  }, [refresh]);
+  }, [deleteitem]);
 
   const listFilesAndDirectories = (pageToken) => {
+    setdeleteitem(true);
+
     const reference = storage().ref("pdfs");
     reference.list({ pageToken }).then((result) => {
       result.items.forEach((ref) => {
@@ -146,10 +156,12 @@ const DocumentationPage = () => {
       setListData(result.items);
       setLoadingV(false);
     });
+
+    setdeleteitem(false);
   };
 
   
-  const deleteitem = async (item) => {
+  const deleteitemfun = async (item) => {
       // Create a reference to the file to delete
       const desertRef = storage().ref().child(`pdfs/${item}`);
 
@@ -160,15 +172,13 @@ const DocumentationPage = () => {
         // Uh-oh, an error occurred!
       });
       
-      //refresh
-      if(refresh==''){
-        setrefresh('refreshed');
-        console.log(refresh);
-      }
-      if(refresh=="refreshed"){
-        setrefresh('');
-        console.log(refresh);
-      }
+     //refresh
+     if(deleteitem==''){
+      setdeleteitem('refreshed');
+    }
+    if(deleteitem=="refreshed"){
+      setdeleteitem('');
+    }
       
     }
 
@@ -184,7 +194,7 @@ const DocumentationPage = () => {
             >
                  File Name: {item.name}
             </Text>
-            <TouchableOpacity onPress={() => deleteitem(item.name)}>
+            <TouchableOpacity onPress={() => deleteitemfun(item.name)}>
               <MaterialIcons name={'delete'} style={styles.iconStyle} size={22}/>
             </TouchableOpacity>
                        
@@ -247,7 +257,7 @@ const DocumentationPage = () => {
                 onPress={_uploadFile}
               >
                 <Text style={styles.buttonTextStyle}>
-                  Insérer le fichier
+                  Envoyer le fichier
                 </Text>
               </TouchableOpacity>
             </View>
@@ -259,13 +269,14 @@ const DocumentationPage = () => {
                   </View>
                 ) : (
                   <FlatList
-                  style={{backgroundColor:'white'}}
+                  style={{backgroundColor:'#EEF1F3'}}
                     data={listData}
                     //data defined in constructor
                     ItemSeparatorComponent={ItemSeparatorView}
                     //Item Separator View
                     renderItem={ItemView}
                     keyExtractor={(item, index) => index.toString()}
+                    refreshControl={<RefreshControl refreshing={refresh} onRefresh={listFilesAndDirectories}/>}
                   />
                 )}
     

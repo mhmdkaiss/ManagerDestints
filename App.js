@@ -75,8 +75,8 @@ class App extends React.Component{
                   iconName = focused ? 'heartbeat' : 'heartbeat';
                   return <FontAwesome name={iconName} size={size} color={color} />;
                 }else if (route.name === 'Locations') {
-                  iconName = focused ? 'location-pin' : 'location-pin';
-                  return <Entypo name={iconName} size={32} color={color} />;
+                  iconName = focused ? 'shopping-cart' : 'shopping-cart';
+                  return <FontAwesome name={iconName} size={30} color={color} />;
                 }
 
                 // You can return any component that you like here!

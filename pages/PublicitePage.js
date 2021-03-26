@@ -22,7 +22,8 @@ class PublicitePage extends React.Component {
           message: message,
         });
       }
-      
+
+      alert('Publicité envoyer');
       this.setState({titleMsg:'',message:''});
     }
  
@@ -32,7 +33,7 @@ class PublicitePage extends React.Component {
         
         <View style={styles.containerForm}>
 
-          <Header headerText={'Publicité'}/>
+          <Header Label={'Publicité'}/>
 
           <View style={styles.imageContainer}>
               <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
@@ -84,7 +85,7 @@ const styles= StyleSheet.create({
   ,
   textInput:{
     backgroundColor:'#EEF1F3',
-    color:'white',
+    color:'black',
     width:280,
     height:40,
     marginBottom:20,
