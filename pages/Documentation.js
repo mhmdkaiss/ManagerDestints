@@ -162,16 +162,32 @@ const DocumentationPage = () => {
 
   
   const deleteitemfun = async (item) => {
-      // Create a reference to the file to delete
-      const desertRef = storage().ref().child(`pdfs/${item}`);
+   
+    Alert.alert(
+      'Supprimer?!',
+      '',
+      [
+        {
+          text:'Oui',
+          onPress:()=>
+          {
+            // Create a reference to the file to delete
+            const desertRef = storage().ref().child(`pdfs/${item}`);
 
-      // Delete the file
-      desertRef.delete().then(() => {
-        // File deleted successfully
-      }).catch((error) => {
-        // Uh-oh, an error occurred!
-      });
-      
+            // Delete the file
+            desertRef.delete().then(() => {
+              // File deleted successfully
+            }).catch((error) => {
+              // Uh-oh, an error occurred!
+            });
+          }
+        },
+        {
+          text:'Non',
+        }
+      ]
+    )
+        
      //refresh
      if(deleteitem==''){
       setdeleteitem('refreshed');
@@ -180,7 +196,7 @@ const DocumentationPage = () => {
       setdeleteitem('');
     }
       
-    }
+  }
 
   const ItemView = ({ item }) => {  
 
