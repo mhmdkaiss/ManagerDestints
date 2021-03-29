@@ -99,7 +99,7 @@ class SignIn extends React.Component {
                 iconColor={'purple'}
                 value={this.state.password}
                 onChangeText={password=>this.setState({password})}
-                placeholder={'password'}
+                placeholder={'Mot de passe'}
                 secureTextEntry
                 />
             </CardSection> 
@@ -114,7 +114,7 @@ class SignIn extends React.Component {
                 <Text style={{fontSize:12,paddingTop:7}}>Se souvenir de moi</Text>
               </View>
                 <TouchableOpacity onPress={this.navigatetoForgotPass.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>mot de passe oublié?</Text>
+                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>Mot de passe oublié?</Text>
                 </TouchableOpacity>
             </View>
 

@@ -9,6 +9,11 @@ class searchPage extends React.Component {
     this.props.navigation.navigate('Attestation');
   }
 
+  
+  navigatetoPaiement(){
+    this.props.navigation.navigate('PaiementPage');
+  }
+
   logout(){
     auth().signOut();
     // this.props.navigation.navigate('SignIn');
@@ -28,7 +33,7 @@ class searchPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-              <HButton label={'Paiement cotisation'} />
+              <HButton label={'Paiement cotisation'} onButtonPress={this.navigatetoPaiement.bind(this)}/>
               <HButton label={'Attestation'} onButtonPress={this.navigatetoAttestation.bind(this)}/>
               <HButton label={'Notifications'} />
           </View>

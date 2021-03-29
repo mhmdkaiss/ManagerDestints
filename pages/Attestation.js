@@ -54,12 +54,15 @@ class AttestationPage extends React.Component {
                 data={this.state.dataList}
                 keyExtractor={(list)=>list.id}
                 renderItem={({item,index})=>{
+                  const length=item.email.length;
+                  const numeroLength= length-11;
+                  const numero = item.email.slice(0, numeroLength);
                     return(
                         <View style={attestationtypeContainer}>
 
-                            <Text style={text}>Email 
+                            <Text style={text}>Dentist numero d'inscription
                             <Entypo name={'arrow-right'} size={16}/>{" "}
-                             {item.email}</Text>
+                             {numero}</Text>
                             {/* <Text style={text}>{item.id}</Text> */}
                             <Text style={text}>Attestation demandé 
                             <Entypo name={'arrow-right'} size={16}/>{" "}
