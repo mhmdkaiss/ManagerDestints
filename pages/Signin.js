@@ -61,12 +61,12 @@ class SignIn extends React.Component {
       return <Spinner/>
     }
     
-      return (
-        <Button 
-            Label={'Se connecter'}
-            onButtonPress={this.onButtonPress.bind(this)}
-        />
-        );
+    return (
+      <Button 
+          Label={'Se connecter'}
+          onButtonPress={this.onButtonPress.bind(this)}
+      />
+    );
   }
 
     
