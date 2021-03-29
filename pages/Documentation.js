@@ -164,11 +164,11 @@ const DocumentationPage = () => {
   const deleteitemfun = async (item) => {
    
     Alert.alert(
-      'Supprimer?!',
+      'Supprimer cet élément',
       '',
       [
         {
-          text:'Oui',
+          text:'SUPPRIMER',
           onPress:()=>
           {
             // Create a reference to the file to delete
@@ -183,7 +183,7 @@ const DocumentationPage = () => {
           }
         },
         {
-          text:'Non',
+          text:'ANNULER',
         }
       ]
     )
