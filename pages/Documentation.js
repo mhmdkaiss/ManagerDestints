@@ -31,7 +31,6 @@ const DocumentationPage = () => {
   // State Defination
   const [loading, setLoading] = useState(false);
   const [filePath, setFilePath] = useState({});
-  const [process, setProcess] = useState("");
 
   const [refresh,setrefresh] = useState(false);
   const [deleteitem,setdeleteitem] = useState('');
@@ -48,12 +47,6 @@ const DocumentationPage = () => {
       setFilePath(fileDetails);
     } catch (error) {
       setFilePath({});
-      // If user canceled the document selection
-      // alert(
-      //   DocumentPicker.isCancel(error)
-      //     ? "Canceled"
-      //     : "Unknown Error: " + JSON.stringify(error)
-      // );
     }
   };
 
@@ -78,9 +71,6 @@ const DocumentationPage = () => {
     }
     setLoading(false);
 
-    //add delay
-
-
     //refresh
      if(deleteitem==''){
       setdeleteitem('refreshed');
@@ -97,35 +87,35 @@ const DocumentationPage = () => {
 
   const uploadFileToFirebaseStorage = async (result,filePath) => {
    
-    const uploadTask = storage().ref(`/pdfs/${filePath.name}`)
-      .putString(result,'base64',{contentType:filePath.type});
+        const uploadTask = storage().ref(`/pdfs/${filePath.name}`)
+          .putString(result,'base64',{contentType:filePath.type});
 
-      uploadTask.on('state_changed', 
-  (snapshot) => {
-    // Observe state change events such as progress, pause, and resume
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    // console.log('Upload is ' + progress + '% done');
-    switch (snapshot.state) {
-      case storage.TaskState.PAUSED: // or 'paused'
-        // console.log('Upload is paused');
-        break;
-      case  storage.TaskState.RUNNING: // or 'running'
-        // console.log('Upload is running');
-        break;
-    }
-  }, 
-  (error) => {
-      console.log(error);
-  }, 
-  () => {
-    // Handle successful uploads on complete
-    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-      console.log('File available at', downloadURL);
-    });
-  }
-);
+          uploadTask.on('state_changed', 
+      (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case storage.TaskState.PAUSED: // or 'paused'
+            // console.log('Upload is paused');
+            break;
+          case  storage.TaskState.RUNNING: // or 'running'
+            // console.log('Upload is running');
+            break;
+        }
+      }, 
+      (error) => {
+          console.log(error);
+      }, 
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          console.log('File available at', downloadURL);
+        });
+      }
+    );
 
   }
 
@@ -253,7 +243,6 @@ const DocumentationPage = () => {
         <SafeAreaView style={{ flex: 1,backgroundColor:'white'}}>
           <View style={styles.container}>
               
-              <Text>{process}</Text>
               <TouchableOpacity
                 activeOpacity={0.5}
                 style={styles.buttonStyle}

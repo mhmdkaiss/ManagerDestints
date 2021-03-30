@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,Text, StyleSheet,Image, FlatList} from 'react-native';
+import {View,Text, StyleSheet,Image, FlatList, Button} from 'react-native';
 import database from '@react-native-firebase/database';
 import Entypo from 'react-native-vector-icons/Entypo';
 
@@ -9,7 +9,7 @@ class AttestationPage extends React.Component {
     state={dataList:[],type:'',envoyerMail:null,envoyerPoste:null};
 
     componentWillMount(){
-        this.readfromDB();
+        this.readfromDB();        
     }
 
     readfromDB(){
@@ -32,8 +32,15 @@ class AttestationPage extends React.Component {
 
                 // console.log(notes);
               });
-        
     }
+
+  sendAttestationbyemail(item){
+    console.log(item.email)
+
+    database()
+    .ref(`/users/${item.id}`)
+    .remove();
+  }
  
   render(){
 
@@ -54,17 +61,17 @@ class AttestationPage extends React.Component {
                 data={this.state.dataList}
                 keyExtractor={(list)=>list.id}
                 renderItem={({item,index})=>{
-                  const length=item.email.length;
-                  const numeroLength= length-11;
-                  const numero = item.email.slice(0, numeroLength);
+                  // const length=item.email.length;
+                  // const numeroLength= length-11;
+                  // const numero = item.email.slice(0, numeroLength);
                     return(
                         <View style={attestationtypeContainer}>
 
-                            <Text style={text}>Dentist numero d'inscription
+                            <Text style={text}>Email : {"\n"}
                             <Entypo name={'arrow-right'} size={16}/>{" "}
-                             {numero}</Text>
+                             {item.email}</Text>
                             {/* <Text style={text}>{item.id}</Text> */}
-                            <Text style={text}>Attestation demandé 
+                            <Text style={text}>Attestation demandé :{"\n"}
                             <Entypo name={'arrow-right'} size={16}/>{" "}
                              {item.type}</Text>
                             {item.envoyerMail?<Text style={text}>
@@ -73,6 +80,11 @@ class AttestationPage extends React.Component {
                             {item.envoyerPoste?<Text style={text}>
                             <Entypo name={'check'}/>
                             {" "}par Poste</Text>:null}
+
+                            {item.envoyerMail ?
+                            <Button title={"Envoyer l'attestation"} onPress={()=>this.sendAttestationbyemail(item)}/>
+                            :null
+                            }
                             
                         </View>
                     ) 

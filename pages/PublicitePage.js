@@ -1,74 +1,139 @@
-import React from 'react';
-import {View,Text, StyleSheet,Image, FlatList, TextInput} from 'react-native';
-import database from '@react-native-firebase/database';
+import React , { useState ,useEffect }from 'react';
+import {View,Text, StyleSheet,Image, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
 import Header from '../components/Header';
 import Button from '../components/Button';
+// To pick the file from local file system
+import DocumentPicker from "react-native-document-picker";
+import RNFetchBlob from 'rn-fetch-blob'
 
 
-class PublicitePage extends React.Component {  
+const PublicitePage = () => {  
 
-  state = {titleMsg:'',message:''};
+  const [titleMsg, settitleMsg] = useState('');
+  const [message, setmessage] = useState('');
+  
+  const [filePath, setFilePath] = useState({});
+  const [fileUrl, setfileUrl] = useState({});
 
-    sendData() {
-      const {titleMsg,message} = this.state;
 
-      if(titleMsg!='' && message!='')
-      {
-        database()
-        .ref(`/Publicities/`)
-        .push({
-          // id: auth().currentUser.uid,
-          titleMsg: titleMsg,
-          message: message,
-        });
-      }
-
-      alert('Publicité envoyer');
-      this.setState({titleMsg:'',message:''});
+  
+  const _chooseFile = async () => {
+    // Opening Document Picker to select one file
+    try {
+      const fileDetails = await DocumentPicker.pick({
+        // Provide which type of file you want user to pick
+        type: [DocumentPicker.types.allFiles],
+      });
+      // Setting the state for selected File
+      setFilePath(fileDetails);
+    } catch (error) {
+      setFilePath({});
     }
- 
-  render(){
+  };
+
+  const _uploadFile = async () => {
+    
+    try {
+      // Check if file selected
+      if (Object.keys(filePath).length == 0 || titleMsg =='' || message=='') 
+        return alert("Please fill all data");
+      // Create Reference
+      const path = filePath.uri;
+      
+      const result = await RNFetchBlob.fs.readFile(path,'base64');
+      uploadFileToFirebaseStorage(result,filePath);
+      
+     
+      setFilePath({});
+    } catch (error) {
+      console.log("Error->", error);
+      alert(`Errorrr-> ${error}`);
+    }
+
+  };
+
+  const uploadFileToFirebaseStorage = async (result,filePath) => {
+   
+        const uploadTask = storage().ref(`/PubImages/${filePath.name}`)
+          .putString(result,'base64',{contentType:filePath.type});
+
+          uploadTask.on('state_changed', 
+      (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case storage.TaskState.PAUSED: // or 'paused'
+            // console.log('Upload is paused');
+            break;
+          case  storage.TaskState.RUNNING: // or 'running'
+            // console.log('Upload is running');
+            break;
+        }
+      }, 
+      (error) => {
+          console.log(error);
+      }, 
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          setfileUrl(downloadURL);
+          console.log('File available at', fileUrl);
+
+          firestore()
+          .collection('Publicities')
+          .add({
+            titlemessage: titleMsg,
+            message: message,
+            fileUrl: fileUrl,
+          });
+          settitleMsg('');
+          setmessage('');
+        });
+
+        alert('publicity sent')
+      }
+    );
+
+  }
+  
+
+  
 
     return (
         
         <View style={styles.containerForm}>
 
-          <Header Label={'Publicité'}/>
-
-          <View style={styles.imageContainer}>
-              <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
-          </View>
+          <Header Label={'Publicité'}/>     
+          
+          <TouchableOpacity style={styles.button} onPress={_chooseFile}>
+              <Text style={{color:'white',paddingLeft:15,paddingTop:5}}>pick Image</Text>
+          </TouchableOpacity>
+            
           
           <View style={styles.PublicitesStyleContainer}>
-             
             <Text>Titre de la publicité:</Text>
-            <TextInput style={styles.textInput} value={this.state.titleMsg} onChangeText={(title)=>this.setState({titleMsg:title})}/>
+            <TextInput style={styles.textInput} value={titleMsg} onChangeText={(title)=>settitleMsg(title)}/>
             <Text>Sujet de la publicité:</Text>
-            <TextInput style={styles.textInput} value={this.state.message} onChangeText={(title)=>this.setState({message:title})}/>
-            <Button Label={'Envoyer la publicité'} onButtonPress={this.sendData.bind(this)}/>
-
+            <TextInput style={styles.textInput} value={message} onChangeText={(title)=>setmessage(title)}/>
+            <Button Label={'Envoyer la publicité'} onButtonPress={_uploadFile}/>
           </View>
         
         
         </View>
            
     );
-  };
+  
 }
 
 const styles= StyleSheet.create({
   containerForm:{
     flex:1,
     backgroundColor:'white'
-  }
-  ,
-  imageStyle:{
-    alignSelf:'flex-end',
-    height:150,
-    width:100,
-  }
-  ,
-  titleStyle:{
   }
   ,
   PublicitesStyleContainer:{
@@ -89,6 +154,18 @@ const styles= StyleSheet.create({
     width:280,
     height:40,
     marginBottom:20,
+  }
+  ,
+  ImageContainer:{
+    alignSelf:'center',
+  }
+  ,
+  button: {
+      margin:8,
+      backgroundColor:'blue',
+      width:100,
+      alignSelf:'center',
+      height:30
   }
 
 })
