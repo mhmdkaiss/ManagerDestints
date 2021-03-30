@@ -35,11 +35,17 @@ class AttestationPage extends React.Component {
     }
 
   sendAttestationbyemail(item){
+    //send email with pdf
     console.log(item.email)
 
-    database()
-    .ref(`/users/${item.id}`)
-    .remove();
+
+    //check if enovyer by post dont remove notification
+    if(item.envoyerPoste==false){
+      database()
+      .ref(`/users/${item.id}`)
+      .remove();
+    } 
+    alert('E-mail envoyé à \n'+item.email);
   }
  
   render(){

@@ -111,7 +111,7 @@ const PublicitePage = () => {
           <Header Label={'Publicité'}/>     
           
           <TouchableOpacity style={styles.button} onPress={_chooseFile}>
-              <Text style={{color:'white',paddingLeft:15,paddingTop:5}}>pick Image</Text>
+              <Text style={{color:'white',paddingLeft:8,paddingTop:5}}>Choisir fichier</Text>
           </TouchableOpacity>
             
           
@@ -161,6 +161,7 @@ const styles= StyleSheet.create({
   }
   ,
   button: {
+    marginTop:100,
       margin:8,
       backgroundColor:'blue',
       width:100,
