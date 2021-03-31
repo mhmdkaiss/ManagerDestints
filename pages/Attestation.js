@@ -1,18 +1,32 @@
-import React from 'react';
+import React , {useState,useEffect} from 'react';
 import {View,Text, StyleSheet,Image, FlatList, Button} from 'react-native';
 import database from '@react-native-firebase/database';
 import Entypo from 'react-native-vector-icons/Entypo';
 
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+// To pick the file from local file system
+import DocumentPicker from "react-native-document-picker";
+import RNFetchBlob from 'rn-fetch-blob'
 
-class AttestationPage extends React.Component {  
 
-    state={dataList:[],type:'',envoyerMail:null,envoyerPoste:null};
+const AttestationPage = () => {  
 
-    componentWillMount(){
-        this.readfromDB();        
-    }
+    const [dataList, setdataList] = useState([]);
+    const [type, settype] = useState('');
+    const [envoyerMail, setenvoyerMail] = useState(null);
+    const [envoyerPoste, setenvoyerPoste] = useState(null);
 
-    readfromDB(){
+    const [filePath, setFilePath] = useState({});
+    const [fileUrl, setfileUrl] = useState({});
+
+
+    useEffect(() => {
+      readfromDB(); 
+    }, [fileUrl]);
+
+   const readfromDB=()=>{
+     console.log('readfromDB running now')
         database()
         .ref('/users')
         .on('value', snapshot => {
@@ -28,28 +42,105 @@ class AttestationPage extends React.Component {
                     // name:Children.val().name,
                   });
                 });
-                this.setState({dataList: notes});
+                setdataList(notes);
 
                 // console.log(notes);
               });
     }
 
-  sendAttestationbyemail(item){
+    const choisir=async()=>{
+         // Opening Document Picker to select one file
+         try {
+          const fileDetails = await DocumentPicker.pick({
+            // Provide which type of file you want user to pick
+            type: [DocumentPicker.types.allFiles],
+          });
+          // Setting the state for selected File
+          setFilePath(fileDetails);
+        } catch (error) {
+          setFilePath({});
+        }
+    }
+
+    const sendAttestation= async(item)=>{
+
     //send email with pdf
-    console.log(item.email)
-
-
+    // console.log(item.email)
     //check if enovyer by post dont remove notification
     if(item.envoyerPoste==false){
       database()
       .ref(`/users/${item.id}`)
       .remove();
     } 
-    alert('E-mail envoyé à \n'+item.email);
-  }
- 
-  render(){
+   
 
+        try {
+          if (Object.keys(filePath).length != 0 ) 
+          {  alert("Attestation envoyé");}
+         
+          // Check if file selected
+          if (Object.keys(filePath).length == 0 ) 
+            { alert("Choisir fichier") };
+          // Create Reference
+          const path =filePath.uri;
+          
+          const result = await RNFetchBlob.fs.readFile(path,'base64');
+          uploadFileToFirebaseStorage(item,result,filePath)
+          
+          
+         firestore()
+        .collection('Attestations')
+        .add({
+          email:item.email,
+          fileUrl: fileUrl,
+        });
+         
+          // setFilePath({});
+        } catch (error) {
+          console.log("Error->", error);
+          // alert(`Errorrr-> ${error}`);
+          alert("Choisir fichier")
+        } 
+     
+  
+  }
+
+
+  const uploadFileToFirebaseStorage = async (item,result,filePath) => {
+     
+    const uploadTask = storage().ref(`/Attestations/${item.email}/${filePath.name}`)
+      .putString(result,'base64',{contentType:filePath.type});
+
+        uploadTask.on('state_changed', 
+    (snapshot) => {
+      // Observe state change events such as progress, pause, and resume
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      // console.log('Upload is ' + progress + '% done');
+      switch (snapshot.state) {
+        case storage.TaskState.PAUSED: // or 'paused'
+          // console.log('Upload is paused');
+          break;
+        case  storage.TaskState.RUNNING: // or 'running'
+          // console.log('Upload is running');
+          break;
+      }
+    }, 
+    (error) => {
+        console.log(error);
+    }, 
+    () => {
+      // Handle successful uploads on complete
+      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+        setfileUrl(downloadURL)   
+        console.log('File available at', downloadURL);
+      })
+            
+    }
+  );
+}
+  
     const {containerForm,imageContainer,imageStyle,PublicitesStyleContainer,attestationtypeContainer,text} = styles;
 
     return (
@@ -64,7 +155,7 @@ class AttestationPage extends React.Component {
              
         
             <FlatList
-                data={this.state.dataList}
+                data={dataList}
                 keyExtractor={(list)=>list.id}
                 renderItem={({item,index})=>{
                   // const length=item.email.length;
@@ -88,7 +179,11 @@ class AttestationPage extends React.Component {
                             {" "}par Poste</Text>:null}
 
                             {item.envoyerMail ?
-                            <Button title={"Envoyer l'attestation"} onPress={()=>this.sendAttestationbyemail(item)}/>
+                            <View>
+                            <Button title={"Choisir fichier"} onPress={()=>choisir()}/>
+                            <View style={{height:10}}></View>
+                            <Button title={"Envoyer le fichier"} onPress={()=>sendAttestation(item)}/>
+                            </View>
                             :null
                             }
                             
@@ -103,7 +198,7 @@ class AttestationPage extends React.Component {
         </View>
            
     );
-  };
+  
 }
 
 const styles= StyleSheet.create({

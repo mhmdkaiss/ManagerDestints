@@ -27,20 +27,22 @@ const PublicitePage = () => {
         type: [DocumentPicker.types.allFiles],
       });
       // Setting the state for selected File
-      setFilePath(fileDetails);
+      await setFilePath(fileDetails);
+      console.log(filePath);
     } catch (error) {
       setFilePath({});
     }
   };
 
   const _uploadFile = async () => {
-    
+
     try {
       // Check if file selected
       if (Object.keys(filePath).length == 0 || titleMsg =='' || message=='') 
-        return alert("Please fill all data");
+        return alert("Veuillez remplir toutes les données");
       // Create Reference
       const path = filePath.uri;
+      
       
       const result = await RNFetchBlob.fs.readFile(path,'base64');
       uploadFileToFirebaseStorage(result,filePath);
