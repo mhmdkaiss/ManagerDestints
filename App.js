@@ -16,6 +16,7 @@ import AttestationPage from './pages/Attestation';
 import ActualitePage from './pages/ActualitePage';
 import DocumentationPage from './pages/Documentation';
 import PaiementPage from './pages/PaiementPage';
+import NotificationPage from './pages/Notification';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +29,7 @@ function SearchStackScreen() {
         <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
         <HomeStack.Screen name="Attestation" component={AttestationPage} options={{headerShown: false}} />
         <HomeStack.Screen name="PaiementPage" component={PaiementPage} options={{headerShown: false}} />
+        <HomeStack.Screen name="NotificationPage" component={NotificationPage} options={{headerShown: false}} />
    </HomeStack.Navigator>
   );
 }
