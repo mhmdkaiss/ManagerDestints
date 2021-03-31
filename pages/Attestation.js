@@ -26,7 +26,6 @@ const AttestationPage = () => {
     }, [fileUrl]);
 
    const readfromDB=()=>{
-     console.log('readfromDB running now')
         database()
         .ref('/users')
         .on('value', snapshot => {
@@ -88,12 +87,12 @@ const AttestationPage = () => {
           uploadFileToFirebaseStorage(item,result,filePath)
           
           
-         firestore()
-        .collection('Attestations')
-        .add({
-          email:item.email,
-          fileUrl: fileUrl,
-        });
+        //  firestore()
+        // .collection('Attestations')
+        // .add({
+        //   email:item.email,
+        //   fileUrl: fileUrl,
+        // });
          
           // setFilePath({});
         } catch (error) {

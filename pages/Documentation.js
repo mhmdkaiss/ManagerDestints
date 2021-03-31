@@ -74,11 +74,9 @@ const DocumentationPage = () => {
     //refresh
      if(deleteitem==''){
       setdeleteitem('refreshed');
-      console.log(deleteitem);
     }
     if(deleteitem=="refreshed"){
       setdeleteitem('');
-      console.log(deleteitem);
     }
 
     Alert.alert("Attention", "Tirer vers le bas pour mettre à jour");

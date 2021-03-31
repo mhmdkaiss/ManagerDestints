@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,Text, StyleSheet,Image,TouchableOpacity,FlatList} from 'react-native';
+import {View,Text, StyleSheet,Image,TouchableOpacity,FlatList, ActivityIndicator,} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 class PaiementPage extends React.Component {  
@@ -10,22 +10,28 @@ class PaiementPage extends React.Component {
     paid:false,
   };
  
-  componentWillMount(){
-    // Get Dentists Data and put them in (Dentistdata array)
+  componentDidMount(){
+    // Get Dentists Data and put them in (Dentistdata array) and makes an array containing firestore ids
     firestore().collection('Dentists').get().then( snapshot =>{
       const dentistarray= [];
       snapshot.forEach(doc=>{
         const data = doc.data();
         dentistarray.push(data);
-       
       })
     this.setState({dentistDataArray:dentistarray});
     // console.log(this.state.dentistDataArray);
     }).catch(error => console.log(error));
   }
 
-  dentistPaid(numero){
-      console.log(numero)
+  dentistPaid(item){
+
+    firestore()
+    .collection('Dentists')
+    .doc(`${item.numero_inscription}`)
+    .update({
+      paid:true,
+    })
+    
   }
 
   render(){
@@ -47,15 +53,24 @@ class PaiementPage extends React.Component {
                  renderItem={({item,index})=>{
                    
                      return(
-                         <View style={attestationtypeContainer}>
+                      
+                        <View style={attestationtypeContainer}>
                             <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
                             <Text style={text}>Email : {item.email}</Text>
-                            {item.paid? <Text style={text}>Payee</Text> : <Text style={text}>Doit payer</Text> }
+                            {item.paid ? 
+                            
+                              <Text style={text}>Payee</Text>
+                            :
+                            <View>
+                            <Text style={text}>Doit payer</Text>  
                             <TouchableOpacity style={buttonStyle} 
-                            onPress={()=>this.dentistPaid(item.numero_inscription)}>
+                            onPress={()=>this.dentistPaid(item)}>
                                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
                             </TouchableOpacity>
+                            </View>
+                            }
                          </View>
+                      
                      ) 
                  }}
              />
@@ -73,6 +88,13 @@ class PaiementPage extends React.Component {
 }
 
 const styles= StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+    alignItems: "center",
+    padding: 10,
+    paddingBottom:30,
+    height:'100%'
+  },
   containerForm:{
     flex:1,
     backgroundColor:'white'
