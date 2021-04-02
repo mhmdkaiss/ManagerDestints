@@ -1,96 +1,116 @@
-import React from 'react';
-import {View,Text, StyleSheet,Image, FlatList, TextInput} from 'react-native';
-import database from '@react-native-firebase/database';
-import Header from '../components/Header';
-import Button from '../components/Button';
+// Searching using Search Bar Filter in React Native List View
+// https://aboutreact.com/react-native-search-bar-filter-on-listview/
 
+// import React in our code
+import React, { useState, useEffect } from 'react';
 
-class NotificationPage extends React.Component {  
+// import all the components we are going to use
+import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 
-  state = {titleMsg:'',message:''};
+import firestore from '@react-native-firebase/firestore';
 
-    sendData() {
-      const {titleMsg,message} = this.state;
+const NotificationPage = () => {
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
 
-      if(titleMsg!='' && message!='')
-      {
-        database()
-        .ref(`/Notifications/`)
-        .push({
-          // id: auth().currentUser.uid,
-          titleMsg: titleMsg,
-          message: message,
-        });
-      }
-      
-      alert('Notification envoyer');
-      this.setState({titleMsg:'',message:''});
+  const [Dentistsdata, setDentistsdata] = useState([]);
+
+  
+
+  useEffect(() => {
+      firestore().collection('Dentists').get().then( snapshot =>{
+        const dentistarray= [];
+        snapshot.forEach(doc=>{
+          const data = doc.data();
+          dentistarray.push(data);
+        })
+        setDentistsdata(dentistarray);
+        setFilteredDataSource(Dentistsdata);
+        setMasterDataSource(Dentistsdata);
+      }).catch(error => console.log(error));  
+  },[]);
+
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource
+      // Update FilteredDataSource
+      const newData = masterDataSource.filter(function (item) {
+        const itemData = item.email
+          ? item.email.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
     }
- 
-  render(){
+  };
 
+  const ItemView = ({ item }) => {
     return (
-        
-        <View style={styles.containerForm}>
-
-          <Header Label={'Notification'}/>
-
-          {/* <View style={styles.imageContainer}>
-              <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
-          </View> */}
-          
-          <View style={styles.PublicitesStyleContainer}>
-             
-            <Text>Cherchez les Dentistes:</Text>
-            <TextInput style={styles.textInput} value={this.state.message} onChangeText={(title)=>this.setState({message:title})}/>
-            <Button Label={"Cherchez"} onButtonPress={this.sendData.bind(this)}/>
-
-          </View>
-        
-        
-        </View>
-           
+      // Flat List Item
+      <Text style={styles.itemStyle} onPress={() => getItem(item)}>
+        {item.email} {"\n"} Numero inscription : {item.numero_inscription}
+      </Text>
     );
   };
-}
 
-const styles= StyleSheet.create({
-  containerForm:{
-    flex:1,
-    backgroundColor:'white'
-  }
-  ,
-  imageStyle:{
-    alignSelf:'flex-end',
-    height:150,
-    width:100,
-  }
-  ,
-  titleStyle:{
-  }
-  ,
-  PublicitesStyleContainer:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
-  }
-  ,
-  attestationtypeContainer:{
-      backgroundColor:'grey',
-      margin:10,
-      padding:10,
-  }
-  ,
-  textInput:{
-    backgroundColor:'#EEF1F3',
-    color:'black',
-    width:280,
-    height:40,
-    marginBottom:20,
-  }
+  const ItemSeparatorView = () => {
+    return (
+      // Flat List Item Separator
+      <View
+        style={{
+          height: 0.5,
+          width: '100%',
+          backgroundColor: '#C8C8C8',
+        }}
+      />
+    );
+  };
 
-})
+  const getItem = (item) => {
+    // Function for click on an item
+    alert('Id : ' + item.numero_inscription + ' Title : ' + item.email);
+  };
 
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <SearchBar
+          round
+          searchIcon={{ size: 24 }}
+          onChangeText={(text) => searchFilterFunction(text)}
+          onClear={(text) => searchFilterFunction('')}
+          placeholder="Type Here..."
+          value={search}
+        />
+        <FlatList
+          data={filteredDataSource}
+          keyExtractor={(item, index) => index.toString()}
+          ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemView}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+  },
+  itemStyle: {
+    padding: 10,
+  },
+});
 
 export default NotificationPage;
-

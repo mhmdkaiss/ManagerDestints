@@ -41,11 +41,9 @@ class NotificationSendMsgPage extends React.Component {
           
           <View style={styles.PublicitesStyleContainer}>
              
-            <Text>Titre de la message:</Text>
-            <TextInput style={styles.textInput} value={this.state.titleMsg} onChangeText={(title)=>this.setState({titleMsg:title})}/>
-            <Text>Sujet de la message:</Text>
+          <Text>Cherchez les Dentistes:</Text>
             <TextInput style={styles.textInput} value={this.state.message} onChangeText={(title)=>this.setState({message:title})}/>
-            <Button Label={"Envoyer notification"} onButtonPress={this.sendData.bind(this)}/>
+            <Button Label={"Cherchez"} onButtonPress={this.sendData.bind(this)}/>
 
           </View>
         
