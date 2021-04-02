@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 
 
-class NotificationPage extends React.Component {  
+class NotificationSendMsgPage extends React.Component {  
 
   state = {titleMsg:'',message:''};
 
@@ -35,15 +35,17 @@ class NotificationPage extends React.Component {
 
           <Header Label={'Notification'}/>
 
-          {/* <View style={styles.imageContainer}>
+          <View style={styles.imageContainer}>
               <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
-          </View> */}
+          </View>
           
           <View style={styles.PublicitesStyleContainer}>
              
-            <Text>Cherchez les Dentistes:</Text>
+            <Text>Titre de la message:</Text>
+            <TextInput style={styles.textInput} value={this.state.titleMsg} onChangeText={(title)=>this.setState({titleMsg:title})}/>
+            <Text>Sujet de la message:</Text>
             <TextInput style={styles.textInput} value={this.state.message} onChangeText={(title)=>this.setState({message:title})}/>
-            <Button Label={"Cherchez"} onButtonPress={this.sendData.bind(this)}/>
+            <Button Label={"Envoyer notification"} onButtonPress={this.sendData.bind(this)}/>
 
           </View>
         
@@ -92,5 +94,5 @@ const styles= StyleSheet.create({
 })
 
 
-export default NotificationPage;
+export default NotificationSendMsgPage;
 
