@@ -5,19 +5,22 @@
 import React, { useState, useEffect } from 'react';
 
 // import all the components we are going to use
-import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList,Button } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
 import firestore from '@react-native-firebase/firestore';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const NotificationPage = () => {
+const NotificationPage = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
 
   const [Dentistsdata, setDentistsdata] = useState([]);
 
-  
+  // navigatetoSendNotification=()=>{
+  //   this.props.navigation.navigate('NotificationSendMsgPage');
+  // }
 
   useEffect(() => {
       firestore().collection('Dentists').get().then( snapshot =>{
@@ -55,12 +58,18 @@ const NotificationPage = () => {
     }
   };
 
+
   const ItemView = ({ item }) => {
     return (
       // Flat List Item
+      <View style={{flexDirection:'row'}}>
       <Text style={styles.itemStyle} onPress={() => getItem(item)}>
         {item.email} {"\n"} Numero inscription : {item.numero_inscription}
       </Text>
+      <TouchableOpacity style={styles.button} >
+      <Text style={{color:'white'}}>Envoyer</Text>
+      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -79,7 +88,7 @@ const NotificationPage = () => {
 
   const getItem = (item) => {
     // Function for click on an item
-    alert('Id : ' + item.numero_inscription + ' Title : ' + item.email);
+    navigation.navigate('NotificationSendMsgPage');
   };
 
   return (
@@ -110,7 +119,14 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     padding: 10,
+    flex:1
   },
+  button:{
+    marginTop:10,
+    marginRight:10,
+    padding:10,
+    backgroundColor:'blue',
+  }
 });
 
 export default NotificationPage;
