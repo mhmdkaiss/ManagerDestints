@@ -1,41 +1,43 @@
-import React from 'react';
+import React , {useState,useEffect} from 'react';
 import {View,Text, StyleSheet,Image,TouchableOpacity,FlatList, ActivityIndicator,} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
-class PaiementPage extends React.Component {  
+const PaiementPage = () => {  
   
-  state = {
-    email:'',
-    dentistDataArray:[],
-    paid:false,
-  };
+  const [dentistDataArray, setdentistDataArray] = useState([]);
+  const [paid, setPaid] = useState(0);
+
+  const [loading, setLoading] = useState(true);
  
-  componentDidMount(){
-    // Get Dentists Data and put them in (Dentistdata array) and makes an array containing firestore ids
+  useEffect(() => { 
+
+     // Get Dentists Data and put them in (Dentistdata array) and makes an array containing firestore ids
     firestore().collection('Dentists').get().then( snapshot =>{
       const dentistarray= [];
       snapshot.forEach(doc=>{
         const data = doc.data();
         dentistarray.push(data);
       })
-    this.setState({dentistDataArray:dentistarray});
-    // console.log(this.state.dentistDataArray);
+    setdentistDataArray(dentistarray);
+
     }).catch(error => console.log(error));
-  }
+    
+  },[paid])
 
-  dentistPaid(item){
-
+  const dentistPaid=(item)=>{
+    setPaid(paid+1);
+    setLoading(true);
     firestore()
     .collection('Dentists')
     .doc(`${item.numero_inscription}`)
     .update({
       paid:true,
     })
-    
+    setLoading(false);
   }
 
-  render(){
-      const {PublicitesStyleContainer,attestationtypeContainer,text,buttonStyle}= styles;
+  
+    const {PublicitesStyleContainer,attestationtypeContainer,text,buttonStyle}= styles;
 
      return (
         
@@ -48,7 +50,7 @@ class PaiementPage extends React.Component {
             <View style={PublicitesStyleContainer}>
                     
              <FlatList
-                 data={this.state.dentistDataArray}
+                 data={dentistDataArray}
                  keyExtractor={(list)=>list.numero_inscription}
                  renderItem={({item,index})=>{
                    
@@ -64,7 +66,7 @@ class PaiementPage extends React.Component {
                             <View>
                             <Text style={text}>Doit payer</Text>  
                             <TouchableOpacity style={buttonStyle} 
-                            onPress={()=>this.dentistPaid(item)}>
+                            onPress={()=>dentistPaid(item)}>
                                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
                             </TouchableOpacity>
                             </View>
@@ -84,7 +86,6 @@ class PaiementPage extends React.Component {
 
         
     );
-  };
 }
 
 const styles= StyleSheet.create({

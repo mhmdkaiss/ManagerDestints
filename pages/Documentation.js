@@ -33,7 +33,7 @@ const DocumentationPage = () => {
   const [filePath, setFilePath] = useState({});
 
   const [refresh,setrefresh] = useState(false);
-  const [deleteitem,setdeleteitem] = useState('');
+  // const [deleteitem,setdeleteitem] = useState('');
 
 
   const _chooseFile = async () => {
@@ -71,13 +71,13 @@ const DocumentationPage = () => {
     }
     setLoading(false);
 
-    //refresh
-     if(deleteitem==''){
-      setdeleteitem('refreshed');
-    }
-    if(deleteitem=="refreshed"){
-      setdeleteitem('');
-    }
+    // //refresh
+    //  if(deleteitem==''){
+    //   setdeleteitem('refreshed');
+    // }
+    // if(deleteitem=="refreshed"){
+    //   setdeleteitem('');
+    // }
 
     Alert.alert("Attention", "Tirer vers le bas pour mettre à jour");
     
@@ -124,11 +124,10 @@ const DocumentationPage = () => {
 
   useEffect(() => {
     listFilesAndDirectories("");
-  }, [deleteitem]);
+  }, []);
 
   const listFilesAndDirectories = (pageToken) => {
-    setdeleteitem(true);
-
+    // setdeleteitem(true);
     const reference = storage().ref("pdfs");
     reference.list({ pageToken }).then((result) => {
       result.items.forEach((ref) => {
@@ -145,7 +144,7 @@ const DocumentationPage = () => {
       setLoadingV(false);
     });
 
-    setdeleteitem(false);
+    // setdeleteitem(false);
   };
 
   
@@ -176,13 +175,13 @@ const DocumentationPage = () => {
       ]
     )
         
-     //refresh
-     if(deleteitem==''){
-      setdeleteitem('refreshed');
-    }
-    if(deleteitem=="refreshed"){
-      setdeleteitem('');
-    }
+    //  //refresh
+    //  if(deleteitem==''){
+    //   setdeleteitem('refreshed');
+    // }
+    // if(deleteitem=="refreshed"){
+    //   setdeleteitem('');
+    // }
       
   }
 

@@ -5,11 +5,10 @@
 import React, { useState, useEffect } from 'react';
 
 // import all the components we are going to use
-import { SafeAreaView, Text, StyleSheet, View, FlatList,Button } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList,ActivityIndicator} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
 import firestore from '@react-native-firebase/firestore';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const NotificationPage = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -18,11 +17,11 @@ const NotificationPage = ({navigation}) => {
 
   const [Dentistsdata, setDentistsdata] = useState([]);
 
-  // navigatetoSendNotification=()=>{
-  //   this.props.navigation.navigate('NotificationSendMsgPage');
-  // }
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { 
+    if(loading){
+    
       firestore().collection('Dentists').get().then( snapshot =>{
         const dentistarray= [];
         snapshot.forEach(doc=>{
@@ -32,8 +31,16 @@ const NotificationPage = ({navigation}) => {
         setDentistsdata(dentistarray);
         setFilteredDataSource(Dentistsdata);
         setMasterDataSource(Dentistsdata);
-      }).catch(error => console.log(error));  
-  },[]);
+      }).catch(error => console.log(error));
+      setLoading(false) 
+      }
+      
+     return() =>{
+       setLoading(false);
+     }  
+  },[Dentistsdata]);
+
+  
 
   const searchFilterFunction = (text) => {
     // Check if searched text is not blank
@@ -62,13 +69,10 @@ const NotificationPage = ({navigation}) => {
   const ItemView = ({ item }) => {
     return (
       // Flat List Item
-      <View style={{flexDirection:'row'}}>
+      <View style={{flexDirection:'row',justifyContent:'center'}}>
       <Text style={styles.itemStyle} onPress={() => getItem(item)}>
         {item.email} {"\n"} Numero inscription : {item.numero_inscription}
       </Text>
-      <TouchableOpacity style={styles.button} >
-      <Text style={{color:'white'}}>Envoyer</Text>
-      </TouchableOpacity>
       </View>
     );
   };
@@ -78,7 +82,7 @@ const NotificationPage = ({navigation}) => {
       // Flat List Item Separator
       <View
         style={{
-          height: 0.5,
+          height: 5,
           width: '100%',
           backgroundColor: '#C8C8C8',
         }}
@@ -88,7 +92,8 @@ const NotificationPage = ({navigation}) => {
 
   const getItem = (item) => {
     // Function for click on an item
-    navigation.navigate('NotificationSendMsgPage');
+    navigation.navigate('NotificationSendMsgPage',{numero:item.numero_inscription});
+
   };
 
   return (
@@ -102,12 +107,24 @@ const NotificationPage = ({navigation}) => {
           placeholder="Type Here..."
           value={search}
         />
-        <FlatList
+        
+        { loading ?
+          <View style={styles.container}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        
+          :
+          <FlatList
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
           renderItem={ItemView}
         />
+       
+        }
+
+
+
       </View>
     </SafeAreaView>
   );
@@ -119,14 +136,9 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     padding: 10,
-    flex:1
+    fontSize:17
   },
-  button:{
-    marginTop:10,
-    marginRight:10,
-    padding:10,
-    backgroundColor:'blue',
-  }
+  
 });
 
 export default NotificationPage;

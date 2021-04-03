@@ -1,33 +1,45 @@
-import React from 'react';
+import React , {useState,useEffect} from 'react';
 import {View,Text, StyleSheet,Image, FlatList, TextInput} from 'react-native';
-import database from '@react-native-firebase/database';
 import Header from '../components/Header';
 import Button from '../components/Button';
+import firestore from '@react-native-firebase/firestore';
 
 
-class NotificationSendMsgPage extends React.Component {  
+  const NotificationSendMsgPage = ({route})  => {
 
-  state = {titleMsg:'',message:''};
 
-    sendData() {
-      const {titleMsg,message} = this.state;
+  const [titleMsg, setTitleMsg] = useState(true);
+  const [messagesArray, setMessagesArray] = useState([]);
 
-      if(titleMsg!='' && message!='')
-      {
-        database()
-        .ref(`/Notifications/`)
-        .push({
-          // id: auth().currentUser.uid,
-          titleMsg: titleMsg,
-          message: message,
-        });
-      }
+  useEffect(() => {
+    firestore()
+      .collection('Dentists')
+      .doc(`${route.params.numero}`)
+      .get()
+      .then(documentSnapshot => {
+          setMessagesArray(documentSnapshot.data().messages);
+      }); 
+  }, [])
+
+    const sendData = async () => {
+      //  console.log(route.params.numero);
       
+      messagesArray.push(titleMsg);
+
+      firestore()
+      .collection('Dentists')
+      .doc(`${route.params.numero}`)
+      .update({
+        messages: messagesArray,
+      })
+
       alert('Notification envoyer');
-      this.setState({titleMsg:'',message:''});
+      // this.setState({titleMsg:'',message:''});
+      setTitleMsg('')
+      
     }
  
-  render(){
+  
 
     return (
         
@@ -41,9 +53,9 @@ class NotificationSendMsgPage extends React.Component {
           
           <View style={styles.PublicitesStyleContainer}>
              
-          <Text>Cherchez les Dentistes:</Text>
-            <TextInput style={styles.textInput} value={this.state.message} onChangeText={(title)=>this.setState({message:title})}/>
-            <Button Label={"Cherchez"} onButtonPress={this.sendData.bind(this)}/>
+          <Text>Saisir un message</Text>
+            <TextInput style={styles.textInput} value={titleMsg} onChangeText={(title)=>setTitleMsg(title)}/>
+            <Button Label={"Envoyez"} onButtonPress={()=>sendData()}/>
 
           </View>
         
@@ -51,7 +63,7 @@ class NotificationSendMsgPage extends React.Component {
         </View>
            
     );
-  };
+ 
 }
 
 const styles= StyleSheet.create({

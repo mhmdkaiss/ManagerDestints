@@ -17,9 +17,9 @@ const PublicitePage = () => {
   const [filePath, setFilePath] = useState({});
   const [fileUrl, setfileUrl] = useState({});
 
-
   
   const _chooseFile = async () => {
+    // console.log(fileUrl);
     // Opening Document Picker to select one file
     try {
       const fileDetails = await DocumentPicker.pick({
@@ -28,14 +28,14 @@ const PublicitePage = () => {
       });
       // Setting the state for selected File
       await setFilePath(fileDetails);
-      console.log(filePath);
+      setfileUrl(fileDetails.uri);
     } catch (error) {
       setFilePath({});
     }
   };
 
   const _uploadFile = async () => {
-
+   
     try {
       // Check if file selected
       if (Object.keys(filePath).length == 0 || titleMsg =='' || message=='') 
@@ -83,18 +83,19 @@ const PublicitePage = () => {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-          setfileUrl(downloadURL);
-          console.log('File available at', fileUrl);
+          
+          console.log('File available at', downloadURL);
 
           firestore()
           .collection('Publicities')
           .add({
             titlemessage: titleMsg,
             message: message,
-            fileUrl: fileUrl,
+            download: downloadURL,
           });
           settitleMsg('');
           setmessage('');
+          setfileUrl('')
         });
 
         alert('publicity sent')
@@ -110,7 +111,10 @@ const PublicitePage = () => {
         
         <View style={styles.containerForm}>
 
-          <Header Label={'Publicité'}/>     
+          <Header Label={'Publicité'}/>    
+
+
+          <Image style={{width:100,height:100}} source={{uri:`${fileUrl}`}}/> 
           
           <TouchableOpacity style={styles.button} onPress={_chooseFile}>
               <Text style={{color:'white',paddingLeft:8,paddingTop:5}}>Choisir fichier</Text>
