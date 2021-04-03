@@ -21,20 +21,18 @@ const NotificationPage = ({navigation}) => {
 
   useEffect(() => { 
     if(loading){
-    
       firestore().collection('Dentists').get().then( snapshot =>{
         const dentistarray= [];
         snapshot.forEach(doc=>{
           const data = doc.data();
           dentistarray.push(data);
         })
+        console.log(dentistarray)
         setDentistsdata(dentistarray);
         setFilteredDataSource(Dentistsdata);
         setMasterDataSource(Dentistsdata);
-      }).catch(error => console.log(error));
-      setLoading(false) 
+      }).catch(error => console.log(error));     
       }
-      
      return() =>{
        setLoading(false);
      }  
