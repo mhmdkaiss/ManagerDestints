@@ -1,10 +1,10 @@
 import React from 'react';
 import {View,ActivityIndicator, StyleSheet} from 'react-native';
 
-const Spinner = ({size}) =>{
+const Spinner = () =>{
     return(
         <View style={styles.spinnerStyle}>
-            <ActivityIndicator size={size||'large'}/>
+            <ActivityIndicator size="large" color="#0000ff" />
         </View>
     );
 }

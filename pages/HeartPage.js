@@ -3,7 +3,15 @@ import {View,Text, StyleSheet,Image} from 'react-native';
 import HButton from '../components/heartPage/HButton';
 
 class HeartPage extends React.Component {  
+
+  navigatetoActualite(){
+    this.props.navigation.navigate('ActualitePage');
+  }
  
+  navigatetoDocumentation(){
+    this.props.navigation.navigate('DocumentationPage');
+  }
+
   render(){
       return (
         
@@ -14,9 +22,9 @@ class HeartPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-              <HButton label={'Actualites'}/>
-              <HButton label={'Documents'}/>
-              <HButton label={'Reparation'}/>
+              <HButton label={'Actualités'} onButtonPress={this.navigatetoActualite.bind(this)}/>
+              <HButton label={'Documents'} onButtonPress={this.navigatetoDocumentation.bind(this)}/>
+              <HButton label={'Répartition'}/>
           </View>
         
         

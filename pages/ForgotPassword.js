@@ -1,5 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
+import auth from '@react-native-firebase/auth';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -7,7 +8,7 @@ import Input from '../components/Input'
 import Spinner from '../components/Spinner';
 
 class ForgotPassword extends React.Component {  
-  state = {email:'',password:'',regId:'',error:'',loading:false,iconType:'Feather'};
+  state = {email:'mohamad_kaiss@hotmail.com',error:'',loading:false};
   
   navigatetoSignIn(){
       this.props.navigation.navigate('SignIn');
@@ -18,18 +19,14 @@ class ForgotPassword extends React.Component {
   }
 
   onButtonPress(){
-    // const {email,password,regId} = this.state;
-    this.setState({error:'pressed',loading:false});
+    const {email,password} = this.state;
+    this.setState({error:'Vérifiez maintenant votre boîte de réception',loading:false});
 
-//     firebase.auth().signInWithEmailAndPassword(email,password)
-//   .then(this.onLoginSuccess.bind(this))
-//   .catch(()=>{
-//     firebase.auth().createUserWithEmailAndPassword(email,password)
-//     .then(this.onLoginSuccess.bind(this))
-//     .catch(()=>{
-//       this.setState({error:'Authentication failed!',loading:false})
-//     });
-//   });
+    auth().sendPasswordResetEmail(email).then(function() {
+      // Email sent.
+    }).catch(function(error) {
+      // An error happened.
+    });
 
   }
 
@@ -40,21 +37,12 @@ class ForgotPassword extends React.Component {
     
       return (
         <Button 
-            Label={'SEND RESET LINK'}
+            Label={'Réinitialiser le mot de passe'}
             onButtonPress={this.onButtonPress.bind(this)}
         />
         );
   }
 
-//   onLoginSuccess(){
-//     this.setState({
-//       email:'',
-//       password:'',
-//       error:'',
-//       regId:'',
-//       loading:false,
-//     })
-//   }
 
   render(){
       return (
@@ -65,7 +53,7 @@ class ForgotPassword extends React.Component {
             <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
         </View>
         
-        <Text style={styles.titleStyle}>Forgot Password?</Text>
+        <Text style={styles.titleStyle}>Mot de passe oublié</Text>
         <Card>
         <CardSection>
             <Input 
@@ -78,7 +66,7 @@ class ForgotPassword extends React.Component {
             </CardSection> 
 
 
-            <Text style={styles.errorTextStyle}>{this.state.error}</Text>
+            {this.state.error?<Text style={styles.errorTextStyle}>{this.state.error}</Text>:null}
             
             <CardSection>
             {this.renderButton()}
@@ -86,9 +74,9 @@ class ForgotPassword extends React.Component {
 
             </Card>
             <View style={styles.noAccountSignUp}>
-              <Text style={{fontSize:11}}>Back to </Text>
+              <Text style={{fontSize:11}}>Retour </Text>
                 <TouchableOpacity onPress={this.navigatetoSignIn.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12}}>Sign In</Text>
+                     <Text style={{color:'blue',fontSize:12}}>Connexion</Text>
                 </TouchableOpacity>
             </View>
           </View>
@@ -117,9 +105,10 @@ const styles= StyleSheet.create({
   }
   ,
   errorTextStyle:{
-    fontSize:20,
+    fontSize:16,
     alignSelf:'center',
-    color:'red'
+    color:'red',
+    padding:8,
   }
   ,
   noAccountSignUp:{

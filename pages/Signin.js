@@ -1,6 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
-import firebase from 'firebase';
+import auth from '@react-native-firebase/auth';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
 import Button from '../components/Button';
@@ -24,7 +24,7 @@ class SignIn extends React.Component {
         const {email,password} = this.state;
         this.setState({loading:true});
 
-      firebase.auth().signInWithEmailAndPassword(email,password)
+      auth().signInWithEmailAndPassword(email,password)
         .then(this.onLoginSuccess.bind(this))
         .catch(()=>{
           this.setState({error:'Signing In failed!',loading:false})
@@ -61,12 +61,12 @@ class SignIn extends React.Component {
       return <Spinner/>
     }
     
-      return (
-        <Button 
-            Label={'LOG IN'}
-            onButtonPress={this.onButtonPress.bind(this)}
-        />
-        );
+    return (
+      <Button 
+          Label={'Se connecter'}
+          onButtonPress={this.onButtonPress.bind(this)}
+      />
+    );
   }
 
     
@@ -79,7 +79,7 @@ class SignIn extends React.Component {
             <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
         </View>
         
-        <Text style={styles.titleStyle}>Sign In</Text>
+        <Text style={styles.titleStyle}>Connexion</Text>
         <Card>
             <CardSection> 
                 <Input 
@@ -99,7 +99,7 @@ class SignIn extends React.Component {
                 iconColor={'purple'}
                 value={this.state.password}
                 onChangeText={password=>this.setState({password})}
-                placeholder={'password'}
+                placeholder={'Mot de passe'}
                 secureTextEntry
                 />
             </CardSection> 
@@ -111,10 +111,10 @@ class SignIn extends React.Component {
               onValueChange={(newValue) => this.setState({toggleCheckBox:newValue}) }
               // onChange={console.log(this.state.toggleCheckBox)}
               />
-                <Text style={{fontSize:12,paddingTop:7}}>Remember me</Text>
+                <Text style={{fontSize:12,paddingTop:7}}>Se souvenir de moi</Text>
               </View>
                 <TouchableOpacity onPress={this.navigatetoForgotPass.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>Forgot Password?</Text>
+                     <Text style={{color:'blue',fontSize:12,paddingTop:7}}>Mot de passe oublié?</Text>
                 </TouchableOpacity>
             </View>
 
@@ -126,9 +126,8 @@ class SignIn extends React.Component {
 
             </Card>
             <View style={styles.noAccountSignUp}>
-              <Text style={{fontSize:11}}>Dont have an account ? </Text>
                 <TouchableOpacity onPress={this.navigatetoSignUp.bind(this)} >
-                     <Text style={{color:'blue',fontSize:12}}>Sign Up</Text>
+                     <Text style={{color:'blue',fontSize:12}}>Créer un compte</Text>
                 </TouchableOpacity>
             </View>
           </View>

@@ -1,12 +1,25 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
-import firebase from 'firebase';
+import auth from '@react-native-firebase/auth';
 import HButton from '../components/heartPage/HButton';
 
 class searchPage extends React.Component {  
 
+  navigatetoAttestation(){
+    this.props.navigation.navigate('Attestation');
+  }
+
+  
+  navigatetoPaiement(){
+    this.props.navigation.navigate('PaiementPage');
+  }
+
+  navigatetoNotification(){
+    this.props.navigation.navigate('NotificationPage');
+  }
+
   logout(){
-    firebase.auth().signOut();
+    auth().signOut();
     // this.props.navigation.navigate('SignIn');
   }
  
@@ -16,7 +29,7 @@ class searchPage extends React.Component {
         <View style={styles.containerForm}>
 
           <TouchableOpacity style={styles.logOutButton} onPress={this.logout.bind(this)}>
-            <Text style={{color:'white',fontSize:18}}>logOut</Text>
+            <Text style={{color:'white',fontSize:18}}>Déconnexion</Text>
           </TouchableOpacity>
 
           <View style={styles.imageContainer}>
@@ -24,9 +37,9 @@ class searchPage extends React.Component {
           </View>
           
           <View style={styles.PublicitesStyleContainer}>
-              <HButton label={'Paiement cotistation'}/>
-              <HButton label={'Attestation'}/>
-              <HButton label={'Notifications'}/>
+              <HButton label={'Paiement cotisation'} onButtonPress={this.navigatetoPaiement.bind(this)}/>
+              <HButton label={'Attestation'} onButtonPress={this.navigatetoAttestation.bind(this)}/>
+              <HButton label={'Notifications'} onButtonPress={this.navigatetoNotification.bind(this)}/>
           </View>
         
         
