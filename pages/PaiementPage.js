@@ -1,12 +1,14 @@
 import React , {useState,useEffect} from 'react';
 import {View,Text, StyleSheet,Image,TouchableOpacity,FlatList, ActivityIndicator,} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import {Picker} from '@react-native-picker/picker';
 
 const PaiementPage = () => {  
   
   const [dentistDataArray, setdentistDataArray] = useState([]);
   const [paid, setPaid] = useState(0);
-
+  const [yearSelected, setyearSelected] = useState('2021');
+ 
   const [loading, setLoading] = useState(true);
  
   useEffect(() => { 
@@ -19,21 +21,112 @@ const PaiementPage = () => {
         dentistarray.push(data);
       })
     setdentistDataArray(dentistarray);
-
+    console.log(dentistarray)
+    
     }).catch(error => console.log(error));
     
   },[paid])
 
-  const dentistPaid=(item)=>{
+  const dentistPaid=(item,selectedyear)=>{
+    console.log('dentistpaid')
     setPaid(paid+1);
-    setLoading(true);
-    firestore()
-    .collection('Dentists')
-    .doc(`${item.numero_inscription}`)
-    .update({
-      paid:true,
-    })
-    setLoading(false);
+    switch(selectedyear){
+      case '2018':
+            firestore()
+            .collection('Dentists')
+            .doc(`${item.numero_inscription}`)
+            .update({
+              year2018:true,
+            });
+            break;
+      case '2019':
+            firestore()
+            .collection('Dentists')
+            .doc(`${item.numero_inscription}`)
+            .update({
+              year2019:true,
+            });
+            break;
+      case '2020':
+              firestore()
+              .collection('Dentists')
+              .doc(`${item.numero_inscription}`)
+              .update({
+                year2020:true,
+              });
+              break;
+      case '2021':
+              firestore()
+              .collection('Dentists')
+              .doc(`${item.numero_inscription}`)
+              .update({
+                year2021:true,
+              });
+              break;
+      default:
+        break;
+    }
+ 
+  }
+
+
+  const renderWithRespectToYears=(selectedyear,item)=>{
+    switch(selectedyear) {
+      case '2018':
+            return (item.year2018 ? 
+                                  
+              <Text style={text}>Payee</Text>
+            :
+            <View>
+            <Text style={text}>Doit payer</Text>  
+            <TouchableOpacity style={buttonStyle} 
+            onPress={()=>dentistPaid(item,selectedyear)}>
+                <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
+            </TouchableOpacity>
+            </View>
+            );
+      case '2019':
+            return (item.year2019 ? 
+                                
+              <Text style={text}>Payee</Text>
+            :
+            <View>
+            <Text style={text}>Doit payer</Text>  
+            <TouchableOpacity style={buttonStyle} 
+            onPress={()=>dentistPaid(item,selectedyear)}>
+                <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
+            </TouchableOpacity>
+            </View>
+            );
+      case '2020':
+            return (item.year2020 ? 
+                                
+              <Text style={text}>Payee</Text>
+            :
+            <View>
+            <Text style={text}>Doit payer</Text>  
+            <TouchableOpacity style={buttonStyle} 
+            onPress={()=>dentistPaid(item,selectedyear)}>
+                <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
+            </TouchableOpacity>
+            </View>
+            );
+      case '2021':
+            return (item.year2021 ? 
+                                
+              <Text style={text}>Payee</Text>
+            :
+            <View>
+            <Text style={text}>Doit payer</Text>  
+            <TouchableOpacity style={buttonStyle} 
+            onPress={()=>dentistPaid(item,selectedyear)}>
+                <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
+            </TouchableOpacity>
+            </View>
+            );
+      default:
+        return null;
+    }
   }
 
   
@@ -47,6 +140,20 @@ const PaiementPage = () => {
                 <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
             </View>
 
+            <View style={styles.pickerContainer}>
+                  <Picker
+                      onValueChange={(itemValue, itemIndex) => {
+                        setyearSelected(itemValue)
+                        }}
+                        selectedValue={yearSelected} 
+                    >
+                      <Picker.Item label="2018" value="2018" />
+                      <Picker.Item label="2019" value="2019" />
+                      <Picker.Item label="2020" value="2020" />
+                      <Picker.Item label="2021" value="2021" />
+                  </Picker>
+                </View>
+
             <View style={PublicitesStyleContainer}>
                     
              <FlatList
@@ -59,18 +166,14 @@ const PaiementPage = () => {
                         <View style={attestationtypeContainer}>
                             <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
                             <Text style={text}>Email : {item.email}</Text>
-                            {item.paid ? 
                             
-                              <Text style={text}>Payee</Text>
-                            :
-                            <View>
-                            <Text style={text}>Doit payer</Text>  
-                            <TouchableOpacity style={buttonStyle} 
-                            onPress={()=>dentistPaid(item)}>
-                                <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
-                            </TouchableOpacity>
-                            </View>
-                            }
+                           { renderWithRespectToYears(yearSelected,item)}
+
+                            
+                           
+                          
+
+
                          </View>
                       
                      ) 
@@ -131,6 +234,15 @@ const styles= StyleSheet.create({
       borderRadius:100,
       height:40,
       alignSelf:'flex-end'
+  }
+  ,
+  pickerContainer:{
+    backgroundColor : "rgb(237,237,237)",
+    justifyContent  : "center",
+    width:160,
+    borderRadius:10,
+    height:30,
+    marginTop:10
   }
 
 })
