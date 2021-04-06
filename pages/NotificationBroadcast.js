@@ -5,37 +5,52 @@ import Button from '../components/Button';
 import firestore from '@react-native-firebase/firestore';
 
 
-  const NotificationSendMsgPage = ({route})  => {
+  const NotificationBroadcast = ({route})  => {
 
 
   const [titleMsg, setTitleMsg] = useState('');
-  const [messagesArray, setMessagesArray] = useState([]);
+  const [idsArray, setidsArray] = useState([]);
+  const [messagesArray,setMessagesArray] = useState([])
 
   useEffect(() => {
-    
-    firestore()
+      firestore()
       .collection('Dentists')
-      .doc(`${route.params.numero}`)
       .get()
-      .then(documentSnapshot => {
-          setMessagesArray(documentSnapshot.data().messages);
-      }); 
+      .then(querySnapshot => {
+          array=[]
+          querySnapshot.forEach(documentSnapshot => {
+             array.push(documentSnapshot.id)
+          });
+          setidsArray(array);
+      });
   }, [])
 
     const sendData = async () => {
-      //  console.log(route.params.numero);
+
+      for(i=0;i<idsArray.length;i++){
+        // const array=[]
+        // firestore()
+        // .collection('Dentists')
+        // .doc(`${idsArray[i]}`).get()
+        // .then(documentSnapshot => {
+          
+        //   array=documentSnapshot.data().messages;
+          
+        //   array.push(titleMsg).then(
+        //     firestore()
+        //     .collection('Dentists')
+        //     .doc(`${idsArray[i]}`)
+        //     .update({
+        //       messages: array,
+        //     })
+        //   )          
+          
+        // })
+        
+      }
       
-      messagesArray.push(titleMsg);
 
-      firestore()
-      .collection('Dentists')
-      .doc(`${route.params.numero}`)
-      .update({
-        messages: messagesArray,
-      })
-
-      alert('Notification envoyer');
-      // this.setState({titleMsg:'',message:''});
+      alert('Error');
       setTitleMsg('')
       
     }
@@ -105,5 +120,5 @@ const styles= StyleSheet.create({
 })
 
 
-export default NotificationSendMsgPage;
+export default NotificationBroadcast;
 

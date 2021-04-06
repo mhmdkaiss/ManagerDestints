@@ -9,8 +9,6 @@ const PaiementPage = () => {
   const [paid, setPaid] = useState(0);
   const [yearSelected, setyearSelected] = useState('2021');
  
-  const [loading, setLoading] = useState(true);
- 
   useEffect(() => { 
 
      // Get Dentists Data and put them in (Dentistdata array) and makes an array containing firestore ids
@@ -21,7 +19,6 @@ const PaiementPage = () => {
         dentistarray.push(data);
       })
     setdentistDataArray(dentistarray);
-    console.log(dentistarray)
     
     }).catch(error => console.log(error));
     
@@ -168,11 +165,6 @@ const PaiementPage = () => {
                             <Text style={text}>Email : {item.email}</Text>
                             
                            { renderWithRespectToYears(yearSelected,item)}
-
-                            
-                           
-                          
-
 
                          </View>
                       

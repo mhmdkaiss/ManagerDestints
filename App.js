@@ -18,6 +18,8 @@ import DocumentationPage from './pages/Documentation';
 import PaiementPage from './pages/PaiementPage';
 import NotificationPage from './pages/Notification';
 import NotificationSendMsgPage from './pages/NotificationSendMsg';
+import repartition from './pages/repartition';
+import NotificationBroadcast from './pages/NotificationBroadcast';
 
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +34,9 @@ function SearchStackScreen() {
         <HomeStack.Screen name="Attestation" component={AttestationPage} options={{headerShown: false}} />
         <HomeStack.Screen name="PaiementPage" component={PaiementPage} options={{headerShown: false}} />
         <HomeStack.Screen name="NotificationPage" component={NotificationPage} options={{headerShown: false}} />
+        <HomeStack.Screen name="NotificationBroadcast" component={NotificationBroadcast} options={{headerShown: false}} />
         <HomeStack.Screen name="NotificationSendMsgPage" component={NotificationSendMsgPage} options={{headerShown: false}} />    
+        
    </HomeStack.Navigator>
   );
 }
@@ -40,9 +44,11 @@ function SearchStackScreen() {
 function HeartStackScreen() {
   return (
     <HomeStack.Navigator>
+    <HomeStack.Screen name="RepartitionPage" component={repartition} options={{headerShown: false}} />
         <HomeStack.Screen name="HeartPage" component={HeartPage} options={{headerShown: false}} />
         <HomeStack.Screen name="ActualitePage" component={ActualitePage} options={{headerShown: false}} />
         <HomeStack.Screen name="DocumentationPage" component={DocumentationPage} options={{headerShown: false}} />
+        
    </HomeStack.Navigator>
   );
 }
@@ -95,8 +101,9 @@ class App extends React.Component{
               showLabel:false,
             }} 
            >
+           <Tab.Screen name="Settings" component={HeartStackScreen} />
             <Tab.Screen name="Home" component={SearchStackScreen} />
-            <Tab.Screen name="Settings" component={HeartStackScreen} />
+            
             <Tab.Screen name="Locations" component={PublicitePage} />
         </Tab.Navigator>
         );

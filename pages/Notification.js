@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 
 // import all the components we are going to use
-import { SafeAreaView, Text, StyleSheet, View, FlatList,ActivityIndicator} from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList,ActivityIndicator , Button} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
 import firestore from '@react-native-firebase/firestore';
@@ -27,7 +27,6 @@ const NotificationPage = ({navigation}) => {
           const data = doc.data();
           dentistarray.push(data);
         })
-        console.log(dentistarray)
         setDentistsdata(dentistarray);
         setFilteredDataSource(Dentistsdata);
         setMasterDataSource(Dentistsdata);
@@ -108,17 +107,23 @@ const NotificationPage = ({navigation}) => {
         
         { loading ?
           <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
+           <ActivityIndicator size="large" color="#0000ff" />
           </View>
         
           :
-          <FlatList
-          data={filteredDataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
-       
+
+          <View>
+
+            <Button title={"Envoyer a tous les dentistes"} onPress={()=>navigation.navigate('NotificationBroadcast')}/>
+
+            <FlatList
+            data={filteredDataSource}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            renderItem={ItemView}
+            />
+            
+          </View>
         }
 
 
