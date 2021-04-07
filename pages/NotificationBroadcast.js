@@ -17,42 +17,35 @@ import firestore from '@react-native-firebase/firestore';
       .collection('Dentists')
       .get()
       .then(querySnapshot => {
-          array=[]
+          var array=[];
+          var dentistsObj={};
+          var array2=[];
           querySnapshot.forEach(documentSnapshot => {
              array.push(documentSnapshot.id)
+             dentistsObj={id: [documentSnapshot.id], messagesArr:[documentSnapshot.data().messages]}
+          
+             array2.push(dentistsObj);
           });
           setidsArray(array);
+          setMessagesArray(array2);
       });
   }, [])
 
     const sendData = async () => {
-
-      for(i=0;i<idsArray.length;i++){
-        // const array=[]
-        // firestore()
-        // .collection('Dentists')
-        // .doc(`${idsArray[i]}`).get()
-        // .then(documentSnapshot => {
-          
-        //   array=documentSnapshot.data().messages;
-          
-        //   array.push(titleMsg).then(
-        //     firestore()
-        //     .collection('Dentists')
-        //     .doc(`${idsArray[i]}`)
-        //     .update({
-        //       messages: array,
-        //     })
-        //   )          
-          
-        // })
+     
+      for(var i=0;i<messagesArray.length;i++){
         
-      }
-      
+          var addMessage = firestore.FieldValue.arrayUnion(titleMsg);
 
-      alert('Error');
+          firestore()
+            .collection('Dentists')
+            .doc(`${messagesArray[i].id}`)
+            .update({
+              messages: addMessage,
+            })
+      }
+      alert('Msg envoyer');
       setTitleMsg('')
-      
     }
  
   
