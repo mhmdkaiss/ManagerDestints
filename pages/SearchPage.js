@@ -20,7 +20,7 @@ class searchPage extends React.Component {
 
   logout(){
     auth().signOut();
-    // this.props.navigation.navigate('SignIn');
+    this.props.navigation.navigate('SignIn');
   }
  
   render(){

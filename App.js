@@ -20,6 +20,7 @@ import NotificationPage from './pages/Notification';
 import NotificationSendMsgPage from './pages/NotificationSendMsg';
 import repartition from './pages/repartition';
 import NotificationBroadcast from './pages/NotificationBroadcast';
+import InfoGeneral from './pages/InfoGeneral';
 
 
 const Tab = createBottomTabNavigator();
@@ -29,8 +30,9 @@ const HomeStack = createStackNavigator();
 function SearchStackScreen() {
   return (
     <HomeStack.Navigator>
+    
         <HomeStack.Screen name="SearchPage" component={searchPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
+              <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
         <HomeStack.Screen name="Attestation" component={AttestationPage} options={{headerShown: false}} />
         <HomeStack.Screen name="PaiementPage" component={PaiementPage} options={{headerShown: false}} />
         <HomeStack.Screen name="NotificationPage" component={NotificationPage} options={{headerShown: false}} />
@@ -44,11 +46,11 @@ function SearchStackScreen() {
 function HeartStackScreen() {
   return (
     <HomeStack.Navigator>
-    <HomeStack.Screen name="RepartitionPage" component={repartition} options={{headerShown: false}} />
         <HomeStack.Screen name="HeartPage" component={HeartPage} options={{headerShown: false}} />
         <HomeStack.Screen name="ActualitePage" component={ActualitePage} options={{headerShown: false}} />
         <HomeStack.Screen name="DocumentationPage" component={DocumentationPage} options={{headerShown: false}} />
-        
+        <HomeStack.Screen name="RepartitionPage" component={repartition} options={{headerShown: false}} />
+        <HomeStack.Screen name="InfoGeneralPage" component={InfoGeneral} options={{headerShown: false}} />
    </HomeStack.Navigator>
   );
 }
@@ -101,9 +103,9 @@ class App extends React.Component{
               showLabel:false,
             }} 
            >
-           <Tab.Screen name="Settings" component={HeartStackScreen} />
+           
             <Tab.Screen name="Home" component={SearchStackScreen} />
-            
+            <Tab.Screen name="Settings" component={HeartStackScreen} />
             <Tab.Screen name="Locations" component={PublicitePage} />
         </Tab.Navigator>
         );
@@ -113,6 +115,7 @@ class App extends React.Component{
               <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
               <HomeStack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown: false}} />
               <HomeStack.Screen name="SignUp" component={RegistrationForm} options={{headerShown: false}} />
+              <HomeStack.Screen name="SearchPage" component={searchPage} options={{headerShown: false}} />
           </HomeStack.Navigator>
             );
       default:

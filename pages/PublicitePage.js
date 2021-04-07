@@ -113,9 +113,10 @@ const PublicitePage = () => {
 
           <Header Label={'Publicité'}/>    
 
+          <View style={styles.ImageContainer}>
+            <Image style={{width:300,height:200}} source={{uri:`${fileUrl}`}}/> 
+          </View>
 
-          <Image style={{width:100,height:100}} source={{uri:`${fileUrl}`}}/> 
-          
           <TouchableOpacity style={styles.button} onPress={_chooseFile}>
               <Text style={{color:'white',paddingLeft:8,paddingTop:5}}>Choisir fichier</Text>
           </TouchableOpacity>
@@ -164,10 +165,13 @@ const styles= StyleSheet.create({
   ,
   ImageContainer:{
     alignSelf:'center',
+    borderColor:'black',
+    borderWidth:0.7,
+    marginTop:30
   }
   ,
   button: {
-    marginTop:100,
+    marginTop:50,
       margin:8,
       backgroundColor:'blue',
       width:100,

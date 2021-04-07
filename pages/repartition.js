@@ -48,32 +48,8 @@ const repartition = () => {
   },[GouvernoratSelected,DelegationSelected]);
 
 
-  // const renderData=(DelegationSelected)=>{
-    
-  // if(DelegationSelected){
-  //   return(
-  //     <View>
-  //       <Text>Libre Pratique :{Delegationdata[DelegationSelected][0]}</Text>     
-  //       <Text>Sante Publique :{Delegationdata[DelegationSelected][1]}</Text> 
-  //       <Text>Chomeurs :{Delegationdata[DelegationSelected][2]}</Text>
-  //     </View>
-  //   )
-  //   }
-  //   else {
-  //     return(
-  //       <View>
-  //         <Text>Libre Pratique :</Text>     
-  //         <Text>Sante Publique :</Text> 
-  //         <Text>Chomeurs :</Text>
-  //       </View>
-  //     )
-  //   }
-    
-  // }
-
   const changeData=(libre,sante,chomeurs)=>{
    
-    if(libre && sante && chomeurs){
       firestore()
       .collection('Gouvernorat')
       .doc(`${GouvernoratSelected}`)
@@ -83,10 +59,11 @@ const repartition = () => {
       .then(() => {
         console.log('User updated!');
       });
-    }
-    else {
-      alert('enter data')
-    }
+   
+    alert('Data Envoyer');
+    setlibre('');
+    setsante('');
+    setchomeurs('');
   }
   
     return (
@@ -99,8 +76,11 @@ const repartition = () => {
                 }}
                 selectedValue={GouvernoratSelected} 
             >
-              <Picker.Item label={`${Gouvernoratdata[0]}`} value={`${Gouvernoratdata[0]}`} />
+                 <Picker.Item label={`${Gouvernoratdata[0]}`} value={`${Gouvernoratdata[0]}`} />
               <Picker.Item label={`${Gouvernoratdata[1]}`} value={`${Gouvernoratdata[1]}`} />
+              <Picker.Item label={`${Gouvernoratdata[2]}`} value={`${Gouvernoratdata[2]}`} />
+              <Picker.Item label={`${Gouvernoratdata[3]}`} value={`${Gouvernoratdata[3]}`} />
+          
           </Picker>
         </View>
         
@@ -112,22 +92,32 @@ const repartition = () => {
                 }}
                 selectedValue={DelegationSelected} 
             >
-              <Picker.Item label={`${DelegationNames[0]}`} value={`${DelegationNames[0]}`} />
+               <Picker.Item label={`${DelegationNames[0]}`} value={`${DelegationNames[0]}`} />
               <Picker.Item label={`${DelegationNames[1]}`} value={`${DelegationNames[1]}`} />
+              <Picker.Item label={`${DelegationNames[2]}`} value={`${DelegationNames[2]}`} />
+              <Picker.Item label={`${DelegationNames[3]}`} value={`${DelegationNames[3]}`} />
+              <Picker.Item label={`${DelegationNames[4]}`} value={`${DelegationNames[4]}`} />
+              {DelegationNames[5]?<Picker.Item label={`${DelegationNames[5]}`} value={`${DelegationNames[5]}`}/>:null}
+              {DelegationNames[6]?<Picker.Item label={`${DelegationNames[6]}`} value={`${DelegationNames[6]}`}/>:null}
+              {DelegationNames[7]?<Picker.Item label={`${DelegationNames[7]}`} value={`${DelegationNames[7]}`}/>:null}
+              {DelegationNames[8]?<Picker.Item label={`${DelegationNames[8]}`} value={`${DelegationNames[8]}`}/>:null}
+              {DelegationNames[9]?<Picker.Item label={`${DelegationNames[9]}`} value={`${DelegationNames[9]}`}/>:null}
+              {DelegationNames[10]?<Picker.Item label={`${DelegationNames[10]}`} value={`${DelegationNames[10]}`}/>:null}
+              
           </Picker>
         </View>
 
 
        
         <View style={{alignItems:'center'}}>
-        <Text>Libre Pratique : </Text> 
+        <Text style={styles.textStyle}>Libre Pratique : </Text> 
         <TextInput style={styles.input} keyboardType={'numeric'} value={libre} onChangeText={(text)=> setlibre(text)}/>
-        <Text>Sante Publique :</Text> 
+        <Text style={styles.textStyle}>Sante Publique :</Text> 
         <TextInput style={styles.input} keyboardType={'numeric'} value={sante} onChangeText={(text)=> setsante(text)}/>
-        <Text>Chomeurs :</Text>
+        <Text style={styles.textStyle}>Chomeurs :</Text>
         <TextInput style={styles.input} keyboardType={'numeric'} value={chomeurs} onChangeText={(text)=> setchomeurs(text)}/>
       </View>
-      <Button title={'change'} onPress={()=>changeData(libre,sante,chomeurs)}/>
+      <Button style={{marginTop:20}} title={'change'} onPress={()=>changeData(libre,sante,chomeurs)}/>
       
 
       </View>
@@ -153,6 +143,9 @@ const styles = StyleSheet.create({
       backgroundColor:'rgb(237,237,200)',
       borderRadius:10,
       width:'40%'
+    },
+    textStyle:{
+      margin:20
     }
 })
 

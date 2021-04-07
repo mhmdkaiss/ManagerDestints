@@ -24,35 +24,45 @@ class SignIn extends React.Component {
         const {email,password} = this.state;
         this.setState({loading:true});
 
-      auth().signInWithEmailAndPassword(email,password)
+       
+      if(email=="mohamad_kaiss@hotmail.com")
+      {
+        auth().signInWithEmailAndPassword(email,password)
         .then(this.onLoginSuccess.bind(this))
         .catch(()=>{
           this.setState({error:'Signing In failed!',loading:false})
         });
       ;
+      }
+      else{
+        this.setState({error:'Signing In failed!',loading:false})
+      }
+     
   }
 
   onLoginSuccess(){
-    const {toggleCheckBox} = state;
-    console.log(toggleCheckBox);
-    if(toggleCheckBox==false){
-      this.setState({
-        email:'',
-        password:'',
-        error:'',
-        regId:'',
-        loading:false,
-      })
-    }
-    else if(toggleCheckBox==true){
-      this.setState({
-        email:this.state.email,
-        password:this.state.password,
-        error:'',
-        regId:'',
-        loading:false,
-      })
-    }
+    console.log('now should navigate to search page')
+    this.props.navigation.navigate('SearchPage');
+    // const {toggleCheckBox} = state;
+    // // console.log(toggleCheckBox);
+    // if(toggleCheckBox==false){
+    //   this.setState({
+    //     email:'',
+    //     password:'',
+    //     error:'',
+    //     regId:'',
+    //     loading:false,
+    //   })
+    // }
+    // else if(toggleCheckBox==true){
+    //   this.setState({
+    //     email:this.state.email,
+    //     password:this.state.password,
+    //     error:'',
+    //     regId:'',
+    //     loading:false,
+    //   })
+    // }
     
   }
 
@@ -125,11 +135,11 @@ class SignIn extends React.Component {
             </CardSection>
 
             </Card>
-            <View style={styles.noAccountSignUp}>
+            {/* <View style={styles.noAccountSignUp}>
                 <TouchableOpacity onPress={this.navigatetoSignUp.bind(this)} >
                      <Text style={{color:'blue',fontSize:12}}>Créer un compte</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         
 
