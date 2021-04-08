@@ -114,20 +114,23 @@ const PublicitePage = () => {
           <Header Label={'Publicité'}/>    
 
           <View style={styles.ImageContainer}>
-            <Image style={{width:300,height:200}} source={{uri:`${fileUrl}`}}/> 
+            <Image style={{width:300,height:'100%'}} source={{uri:`${fileUrl}`}}/> 
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={_chooseFile}>
-              <Text style={{color:'white',paddingLeft:8,paddingTop:5}}>Choisir fichier</Text>
-          </TouchableOpacity>
+          <View style={{flex:3}}>
+            <View style={{flex:1,justifyContent:'center'}}>
+              <TouchableOpacity style={styles.button} onPress={_chooseFile}>
+                  <Text style={{color:'white',paddingLeft:8,paddingTop:5}}>Choisir fichier</Text>
+              </TouchableOpacity>
+            </View>
             
-          
-          <View style={styles.PublicitesStyleContainer}>
-            <Text>Titre de la publicité:</Text>
-            <TextInput style={styles.textInput} value={titleMsg} onChangeText={(title)=>settitleMsg(title)}/>
-            <Text>Sujet de la publicité:</Text>
-            <TextInput style={styles.textInput} value={message} onChangeText={(title)=>setmessage(title)}/>
-            <Button Label={'Envoyer la publicité'} onButtonPress={_uploadFile}/>
+            <View style={styles.PublicitesStyleContainer}>
+              <Text>Titre de la publicité:</Text>
+              <TextInput style={styles.textInput} value={titleMsg} onChangeText={(title)=>settitleMsg(title)}/>
+              <Text>Sujet de la publicité:</Text>
+              <TextInput style={styles.textInput} value={message} onChangeText={(title)=>setmessage(title)}/>
+              <Button Label={'Envoyer la publicité'} onButtonPress={_uploadFile}/>
+            </View>
           </View>
         
         
@@ -144,39 +147,30 @@ const styles= StyleSheet.create({
   }
   ,
   PublicitesStyleContainer:{
-    flex:1,
+    flex:3,
     justifyContent:'center',
     alignItems:'center',
-  }
-  ,
-  attestationtypeContainer:{
-      backgroundColor:'grey',
-      margin:10,
-      padding:10,
   }
   ,
   textInput:{
     backgroundColor:'#EEF1F3',
     color:'black',
     width:280,
-    height:40,
-    marginBottom:20,
   }
   ,
   ImageContainer:{
     alignSelf:'center',
     borderColor:'black',
     borderWidth:0.7,
-    marginTop:30
+    flex:2,
   }
   ,
   button: {
-    marginTop:50,
-      margin:8,
       backgroundColor:'blue',
       width:100,
       alignSelf:'center',
-      height:30
+      paddingBottom:5,
+      
   }
 
 })
