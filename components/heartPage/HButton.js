@@ -1,5 +1,6 @@
 import React from 'react';
 import {TouchableOpacity,Text,  StyleSheet} from 'react-native';
+var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
 
 const HButton = ({label,onButtonPress}) => {
     return(
@@ -13,15 +14,15 @@ const styles= StyleSheet.create({
     ButtonStyle:{
         backgroundColor:'#4548E9',
         borderRadius:25,
-        margin:10,
-        width:270,
-        height:70,
+        margin:1*vh,
+        width:80*vw,
+        height:8*vh,
     }
     ,
     textStyle:{
         color:'white',
-        fontSize:20,
-        padding:15,
+        fontSize:2.8*vh,
+        padding:2*vh,
         alignSelf:'center'
     }
 })

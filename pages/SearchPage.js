@@ -3,6 +3,8 @@ import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import HButton from '../components/heartPage/HButton';
 
+var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
+
 class searchPage extends React.Component {  
 
   navigatetoAttestation(){
@@ -57,8 +59,8 @@ const styles= StyleSheet.create({
   ,
   imageStyle:{
     alignSelf:'flex-end',
-    height:150,
-    width:100,
+    height:22*vh,
+    width:25*vw,
   }
   ,
   titleStyle:{

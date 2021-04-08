@@ -2,6 +2,8 @@ import React from 'react';
 import {View,Text, StyleSheet,Image} from 'react-native';
 import HButton from '../components/heartPage/HButton';
 
+var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
+
 class HeartPage extends React.Component {  
 
   navigatetoActualite(){
@@ -51,15 +53,16 @@ const styles= StyleSheet.create({
   ,
   imageStyle:{
     alignSelf:'flex-end',
-    height:150,
-    width:100,
+    height:22*vh,
+    width:25*vw,
   }
   ,
-  titleStyle:{
+  imageContainer:{
+    flex:1,
   }
   ,
   PublicitesStyleContainer:{
-    flex:1,
+    flex:2,
     justifyContent:'center',
     alignItems:'center',
   }
