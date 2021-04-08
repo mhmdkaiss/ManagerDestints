@@ -1,5 +1,6 @@
 import React from 'react';
 import {View,Text, StyleSheet,Image, TouchableOpacity} from 'react-native';
+import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection';
@@ -7,9 +8,10 @@ import Button from '../components/Button';
 import Input from '../components/Input'
 import Spinner from '../components/Spinner';
 import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-community/async-storage'
 
 class SignIn extends React.Component {  
-  state = {email:'mohamad_kaiss@hotmail.com',password:'12345678',error:'',loading:false,toggleCheckBox:null};
+  state = {email:'mohamad_kaiss@hotmail.com',password:'12345678',error:'',loading:false,toggleCheckBox:false};
 
   navigatetoSignUp(){
       this.props.navigation.navigate('SignUp');
@@ -40,42 +42,48 @@ class SignIn extends React.Component {
      
   }
 
-  onLoginSuccess(){
-    console.log('now should navigate to search page')
-    this.props.navigation.navigate('SearchPage');
-    // const {toggleCheckBox} = state;
-    // // console.log(toggleCheckBox);
-    // if(toggleCheckBox==false){
-    //   this.setState({
-    //     email:'',
-    //     password:'',
-    //     error:'',
-    //     regId:'',
-    //     loading:false,
-    //   })
-    // }
-    // else if(toggleCheckBox==true){
-    //   this.setState({
-    //     email:this.state.email,
-    //     password:this.state.password,
-    //     error:'',
-    //     regId:'',
-    //     loading:false,
-    //   })
-    // }
+  async onLoginSuccess(){
+   
+    const {toggleCheckBox,email,password} = this.state;
+    if(toggleCheckBox==true){
+      await AsyncStorage.setItem('@save_password', password )
+      await AsyncStorage.setItem('@save_email', email )
+    }
     
+    if(toggleCheckBox==false){
+      await AsyncStorage.removeItem('@save_password')
+      await AsyncStorage.removeItem('@save_email')
+    }
+
+    this.props.navigation.navigate('SearchPage');
   }
+
+  async componentDidMount(){
+    const savedpassword = await AsyncStorage.getItem('@save_password')
+    const savedemail = await AsyncStorage.getItem('@save_email')
+    if(savedpassword != null && savedemail != null){
+      this.setState({password:savedpassword,email:savedemail})
+    }
+  }
+
+  
 
   renderButton(){
     if(this.state.loading){
-      return <Spinner/>
+      return (
+        <View>
+          <Spinner/>
+        </View>
+      )
     }
     
     return (
+      <CardSection>
       <Button 
           Label={'Se connecter'}
           onButtonPress={this.onButtonPress.bind(this)}
       />
+      </CardSection>
     );
   }
 
@@ -130,9 +138,11 @@ class SignIn extends React.Component {
 
             <Text style={styles.errorTextStyle}>{this.state.error}</Text>
             
-            <CardSection>
+            
             {this.renderButton()}
-            </CardSection>
+            
+            <CardSection></CardSection>
+            <CardSection></CardSection>
 
             </Card>
             {/* <View style={styles.noAccountSignUp}>
