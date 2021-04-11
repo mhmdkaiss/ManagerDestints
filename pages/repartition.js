@@ -2,12 +2,13 @@ import React , {useState,useEffect} from 'react';
 import {View,Text, StyleSheet,TextInput,Button} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
+var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
 
 const repartition = () => {
 
     const [GouvernoratSelected, setGouvernoratSelected] = useState('Beja');
     const [Gouvernoratdata, setGouvernoratdata] = useState([]);
-    const [DelegationSelected, setDelegationSelected] = useState('nefza');
+    const [DelegationSelected, setDelegationSelected] = useState('');
     const [DelegationNames, setDelegationNames] = useState([]);
 
     const [Delegationdata, setDelegationdata] = useState([]);
@@ -33,16 +34,16 @@ const repartition = () => {
       .get()
       .then(documentSnapshot => {
       
-    
-    if (documentSnapshot.exists) {
-      var array=[]
-      var arraydata=[]
-      array=Object.keys(documentSnapshot.data());
-      arraydata=documentSnapshot.data();
-    } 
-    
-    setDelegationdata(arraydata)
-    setDelegationNames(array)
+          if (documentSnapshot.exists) {
+            var array=[]
+            var arraydata=[]
+            array=Object.keys(documentSnapshot.data());
+            arraydata=documentSnapshot.data();
+          } 
+          
+          setDelegationdata(arraydata)
+          setDelegationNames(array)
+          console.log(arraydata)
   }));
     
   },[GouvernoratSelected,DelegationSelected]);
@@ -65,6 +66,35 @@ const repartition = () => {
     setsante('');
     setchomeurs('');
   }
+
+
+  const renderData = (DelegationSelected) =>{
+    
+    if(DelegationSelected){
+      return(
+        <View style={{alignItems:'center'}}>
+        <Text style={styles.textStyle}>Libre Pratique : {Delegationdata[DelegationSelected][0]}</Text> 
+        <TextInput style={styles.input} keyboardType={'numeric'} value={libre} onChangeText={(text)=> setlibre(text)}/>
+        <Text style={styles.textStyle}>Sante Publique : {Delegationdata[DelegationSelected][1]}</Text> 
+        <TextInput style={styles.input} keyboardType={'numeric'} value={sante} onChangeText={(text)=> setsante(text)}/>
+        <Text style={styles.textStyle}>Chomeurs : {Delegationdata[DelegationSelected][2]}</Text>
+        <TextInput style={styles.input} keyboardType={'numeric'} value={chomeurs} onChangeText={(text)=> setchomeurs(text)}/>
+      </View>
+      )
+     }
+     else{
+       return(
+        <View style={{alignItems:'center'}}>
+          <Text style={styles.textStyle}>Libre Pratique : </Text> 
+          <TextInput style={styles.input} keyboardType={'numeric'} value={libre} onChangeText={(text)=> setlibre(text)}/>
+          <Text style={styles.textStyle}>Sante Publique :</Text> 
+          <TextInput style={styles.input} keyboardType={'numeric'} value={sante} onChangeText={(text)=> setsante(text)}/>
+          <Text style={styles.textStyle}>Chomeurs :</Text>
+          <TextInput style={styles.input} keyboardType={'numeric'} value={chomeurs} onChangeText={(text)=> setchomeurs(text)}/>
+        </View>
+       )
+     }
+  }
   
     return (
         <View style={{}}>
@@ -76,7 +106,7 @@ const repartition = () => {
                 }}
                 selectedValue={GouvernoratSelected} 
             >
-                 <Picker.Item label={`${Gouvernoratdata[0]}`} value={`${Gouvernoratdata[0]}`} />
+              <Picker.Item label={`${Gouvernoratdata[0]}`} value={`${Gouvernoratdata[0]}`} />
               <Picker.Item label={`${Gouvernoratdata[1]}`} value={`${Gouvernoratdata[1]}`} />
               <Picker.Item label={`${Gouvernoratdata[2]}`} value={`${Gouvernoratdata[2]}`} />
               <Picker.Item label={`${Gouvernoratdata[3]}`} value={`${Gouvernoratdata[3]}`} />
@@ -92,7 +122,8 @@ const repartition = () => {
                 }}
                 selectedValue={DelegationSelected} 
             >
-               <Picker.Item label={`${DelegationNames[0]}`} value={`${DelegationNames[0]}`} />
+              <Picker.Item label={``} value={``} />
+              <Picker.Item label={`${DelegationNames[0]}`} value={`${DelegationNames[0]}`} />
               <Picker.Item label={`${DelegationNames[1]}`} value={`${DelegationNames[1]}`} />
               <Picker.Item label={`${DelegationNames[2]}`} value={`${DelegationNames[2]}`} />
               <Picker.Item label={`${DelegationNames[3]}`} value={`${DelegationNames[3]}`} />
@@ -107,18 +138,11 @@ const repartition = () => {
           </Picker>
         </View>
 
-
-       
-        <View style={{alignItems:'center'}}>
-        <Text style={styles.textStyle}>Libre Pratique : </Text> 
-        <TextInput style={styles.input} keyboardType={'numeric'} value={libre} onChangeText={(text)=> setlibre(text)}/>
-        <Text style={styles.textStyle}>Sante Publique :</Text> 
-        <TextInput style={styles.input} keyboardType={'numeric'} value={sante} onChangeText={(text)=> setsante(text)}/>
-        <Text style={styles.textStyle}>Chomeurs :</Text>
-        <TextInput style={styles.input} keyboardType={'numeric'} value={chomeurs} onChangeText={(text)=> setchomeurs(text)}/>
-      </View>
-      <Button style={{marginTop:20}} title={'change'} onPress={()=>changeData(libre,sante,chomeurs)}/>
+        {renderData(DelegationSelected)}
       
+      <View style={{marginTop:5*vw}} >
+        <Button title={'change'} onPress={()=>changeData(libre,sante,chomeurs)}/>
+      </View>
 
       </View>
  )
@@ -134,18 +158,19 @@ const styles = StyleSheet.create({
       justifyContent  : "center",
       width:'90%',
       borderRadius:10,
-      height:40,
-      marginTop:10,
+      height:10*vw,
+      marginTop:3*vw,
       alignSelf:'center'
     }
     ,
     input:{
       backgroundColor:'rgb(237,237,200)',
       borderRadius:10,
-      width:'40%'
+      width:'40%',
     },
     textStyle:{
-      margin:20
+      margin:2*vw,
+      fontSize:4*vw
     }
 })
 

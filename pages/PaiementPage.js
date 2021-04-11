@@ -72,34 +72,49 @@ const PaiementPage = () => {
       case '2018':
             return (item.year2018 ? 
                                   
-              <Text style={text}>Payee</Text>
+              null
             :
+            <View style={attestationtypeContainer}>
+            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
+            <Text style={text}>Prénom : {item.prenom}</Text>
+            <Text style={text}>Nom : {item.nom}</Text>
+            
             <View>
             <Text style={text}>Doit payer</Text>  
             <TouchableOpacity style={buttonStyle} 
             onPress={()=>dentistPaid(item,selectedyear)}>
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
             </TouchableOpacity>
+            </View>
             </View>
             );
       case '2019':
             return (item.year2019 ? 
                                 
-              <Text style={text}>Payee</Text>
+              null
             :
+            <View style={attestationtypeContainer}>
+            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
+            <Text style={text}>Prénom : {item.prenom}</Text>
+            <Text style={text}>Nom : {item.nom}</Text>
             <View>
             <Text style={text}>Doit payer</Text>  
             <TouchableOpacity style={buttonStyle} 
             onPress={()=>dentistPaid(item,selectedyear)}>
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
             </TouchableOpacity>
+            </View>
             </View>
             );
       case '2020':
             return (item.year2020 ? 
                                 
-              <Text style={text}>Payee</Text>
+              null
             :
+            <View style={attestationtypeContainer}>
+            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
+            <Text style={text}>Prénom : {item.prenom}</Text>
+            <Text style={text}>Nom : {item.nom}</Text>
             <View>
             <Text style={text}>Doit payer</Text>  
             <TouchableOpacity style={buttonStyle} 
@@ -107,18 +122,24 @@ const PaiementPage = () => {
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
             </TouchableOpacity>
             </View>
+            </View>
             );
       case '2021':
             return (item.year2021 ? 
                                 
-              <Text style={text}>Payee</Text>
+              null
             :
+            <View style={attestationtypeContainer}>
+            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
+            <Text style={text}>Prénom : {item.prenom}</Text>
+            <Text style={text}>Nom : {item.nom}</Text>
             <View>
             <Text style={text}>Doit payer</Text>  
             <TouchableOpacity style={buttonStyle} 
             onPress={()=>dentistPaid(item,selectedyear)}>
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
             </TouchableOpacity>
+            </View>
             </View>
             );
       default:
@@ -160,13 +181,10 @@ const PaiementPage = () => {
                    
                      return(
                       
-                        <View style={attestationtypeContainer}>
-                            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
-                            <Text style={text}>Email : {item.email}</Text>
-                            
-                           { renderWithRespectToYears(yearSelected,item)}
+                      <View>
+                            { renderWithRespectToYears(yearSelected,item)}
 
-                         </View>
+                      </View>
                       
                      ) 
                  }}
