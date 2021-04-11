@@ -2,12 +2,20 @@ import React , {useState,useEffect} from 'react';
 import {View,Text, StyleSheet,Image,TouchableOpacity,FlatList, ActivityIndicator,} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
+import { SearchBar } from 'react-native-elements';
 
 const PaiementPage = () => {  
   
   const [dentistDataArray, setdentistDataArray] = useState([]);
   const [paid, setPaid] = useState(0);
   const [yearSelected, setyearSelected] = useState('2021');
+  
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
+
+  const [loading, setLoading] = useState(true);
  
   useEffect(() => { 
 
@@ -19,6 +27,11 @@ const PaiementPage = () => {
         dentistarray.push(data);
       })
     setdentistDataArray(dentistarray);
+
+    //search bar 
+    setFilteredDataSource(dentistarray);
+    setMasterDataSource(dentistarray);
+    //search bar
     
     }).catch(error => console.log(error));
     
@@ -147,6 +160,29 @@ const PaiementPage = () => {
     }
   }
 
+  //search bar
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      const newData = masterDataSource.filter(function (item) {
+        const itemData = item.numero_inscription.toString()
+
+        const textData = text;
+        
+        return itemData.indexOf(textData) > -1; 
+      });
+
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+//search bar
+
   
     const {PublicitesStyleContainer,attestationtypeContainer,text,buttonStyle}= styles;
 
@@ -154,11 +190,23 @@ const PaiementPage = () => {
         
         <View style={styles.containerForm}>
 
-            <View style={styles.imageContainer}>
+            <View style={{alignSelf:'flex-end'}}>
                 <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
             </View>
 
-            <View style={styles.pickerContainer}>
+            <View style={{width:'100%',marginBottom:10}}>
+            <SearchBar  
+              round
+              searchIcon={{ size: 24 }}
+              onChangeText={(text) => searchFilterFunction(text)}
+              onClear={(text) => searchFilterFunction('')}
+              placeholder="écrivez ici..."
+              value={search}
+              
+            />
+            </View>
+
+            <View style={styles.pickerContainer}> 
                   <Picker
                       onValueChange={(itemValue, itemIndex) => {
                         setyearSelected(itemValue)
@@ -172,10 +220,12 @@ const PaiementPage = () => {
                   </Picker>
                 </View>
 
+            
+
             <View style={PublicitesStyleContainer}>
                     
              <FlatList
-                 data={dentistDataArray}
+                 data={filteredDataSource}
                  keyExtractor={(list)=>list.numero_inscription}
                  renderItem={({item,index})=>{
                    
@@ -210,8 +260,9 @@ const styles= StyleSheet.create({
     height:'100%'
   },
   containerForm:{
-    flex:1,
-    backgroundColor:'white'
+     flex:1,
+      backgroundColor:'white',
+      alignItems:'center'
   }
   ,
   imageStyle:{
@@ -252,7 +303,7 @@ const styles= StyleSheet.create({
     width:160,
     borderRadius:10,
     height:30,
-    marginTop:10
+    marginTop:10,
   }
 
 })
