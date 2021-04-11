@@ -28,6 +28,7 @@ const NotificationPage = ({navigation}) => {
           dentistarray.push(data);
         })
         setDentistsdata(dentistarray);
+        
         setFilteredDataSource(Dentistsdata);
         setMasterDataSource(Dentistsdata);
       }).catch(error => console.log(error));     
@@ -46,12 +47,13 @@ const NotificationPage = ({navigation}) => {
       // Filter the masterDataSource
       // Update FilteredDataSource
       const newData = masterDataSource.filter(function (item) {
-        const itemData = item.email
-          ? item.email.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+        const itemData = item.numero_inscription.toString()
+
+        const textData = text;
+        
+        return itemData.indexOf(textData) > -1; 
       });
+
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
@@ -101,7 +103,7 @@ const NotificationPage = ({navigation}) => {
           searchIcon={{ size: 24 }}
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
-          placeholder="Type Here..."
+          placeholder="écrivez ici..."
           value={search}
         />
         

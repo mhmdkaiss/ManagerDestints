@@ -25,7 +25,7 @@ const PaiementPage = () => {
   },[paid])
 
   const dentistPaid=(item,selectedyear)=>{
-    console.log('dentistpaid')
+    
     setPaid(paid+1);
     switch(selectedyear){
       case '2018':

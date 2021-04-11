@@ -32,12 +32,12 @@ class SignIn extends React.Component {
         auth().signInWithEmailAndPassword(email,password)
         .then(this.onLoginSuccess.bind(this))
         .catch(()=>{
-          this.setState({error:'Signing In failed!',loading:false})
+          this.setState({error:'échec de la connexion!',loading:false})
         });
       ;
       }
       else{
-        this.setState({error:'Signing In failed!',loading:false})
+        this.setState({error:'échec de la connexion!',loading:false})
       }
      
   }
