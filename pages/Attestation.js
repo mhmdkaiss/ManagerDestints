@@ -4,7 +4,6 @@ import database from '@react-native-firebase/database';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
 // To pick the file from local file system
 import DocumentPicker from "react-native-document-picker";
 import RNFetchBlob from 'rn-fetch-blob'
@@ -13,9 +12,6 @@ import RNFetchBlob from 'rn-fetch-blob'
 const AttestationPage = () => {  
 
     const [dataList, setdataList] = useState([]);
-    const [type, settype] = useState('');
-    const [envoyerMail, setenvoyerMail] = useState(null);
-    const [envoyerPoste, setenvoyerPoste] = useState(null);
 
     const [filePath, setFilePath] = useState({});
     const [fileUrl, setfileUrl] = useState({});
@@ -86,13 +82,6 @@ const AttestationPage = () => {
           const result = await RNFetchBlob.fs.readFile(path,'base64');
           uploadFileToFirebaseStorage(item,result,filePath)
           
-          
-        //  firestore()
-        // .collection('Attestations')
-        // .add({
-        //   email:item.email,
-        //   fileUrl: fileUrl,
-        // });
          
           // setFilePath({});
         } catch (error) {
@@ -138,7 +127,7 @@ const AttestationPage = () => {
             
     }
   );
-}
+  } 
   
     const {containerForm,imageContainer,imageStyle,PublicitesStyleContainer,attestationtypeContainer,text} = styles;
 
