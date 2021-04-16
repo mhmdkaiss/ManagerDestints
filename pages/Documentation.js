@@ -71,14 +71,6 @@ const DocumentationPage = () => {
     }
     setLoading(false);
 
-    // //refresh
-    //  if(deleteitem==''){
-    //   setdeleteitem('refreshed');
-    // }
-    // if(deleteitem=="refreshed"){
-    //   setdeleteitem('');
-    // }
-
     Alert.alert("Attention", "Tirer vers le bas pour mettre à jour");
     
   };
