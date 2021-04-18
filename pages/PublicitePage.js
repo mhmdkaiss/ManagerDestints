@@ -38,7 +38,7 @@ const PublicitePage = () => {
    
     try {
       // Check if file selected
-      if (Object.keys(filePath).length == 0 || titleMsg =='' || message=='') 
+      if (Object.keys(filePath).length == 0 ) 
         return alert("Veuillez remplir toutes les données");
       // Create Reference
       const path = filePath.uri;
@@ -83,18 +83,29 @@ const PublicitePage = () => {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+
+          //send if JPG or not
+          var Video=null;
+          const downloadURLUpperCase =downloadURL.toUpperCase()
+          
+          const checktypeifVidorImg = downloadURLUpperCase.search("JPG");
+          
+          if(checktypeifVidorImg==-1){
+             Video=true
+          }
+          else{
+            Video=false
+          }
+
           
           console.log('File available at', downloadURL);
 
           firestore()
           .collection('Publicities')
           .add({
-            titlemessage: titleMsg,
-            message: message,
             download: downloadURL,
+            Video : Video,
           });
-          settitleMsg('');
-          setmessage('');
           setfileUrl('')
         });
 
@@ -125,10 +136,10 @@ const PublicitePage = () => {
             </View>
             
             <View style={styles.PublicitesStyleContainer}>
-              <Text>Titre de la publicité:</Text>
+              {/* <Text>Titre de la publicité:</Text>
               <TextInput style={styles.textInput} value={titleMsg} onChangeText={(title)=>settitleMsg(title)}/>
               <Text>Sujet de la publicité:</Text>
-              <TextInput style={styles.textInput} value={message} onChangeText={(title)=>setmessage(title)}/>
+              <TextInput style={styles.textInput} value={message} onChangeText={(title)=>setmessage(title)}/> */}
               <Button Label={'Envoyer la publicité'} onButtonPress={_uploadFile}/>
             </View>
           </View>
