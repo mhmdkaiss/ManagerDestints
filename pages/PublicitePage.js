@@ -185,6 +185,7 @@ const styles= StyleSheet.create({
   }
   ,
   ImageContainer:{
+    marginTop:50,
     alignSelf:'center',
     borderColor:'black',
     borderWidth:0.7,
