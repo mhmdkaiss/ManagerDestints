@@ -1,8 +1,9 @@
 import React , {useState,useEffect} from 'react';
-import {View,Text, StyleSheet,Image,TouchableOpacity,FlatList, ActivityIndicator,} from 'react-native';
+import {View,Text, StyleSheet,Image,TouchableOpacity,FlatList, Alert,} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
 import { SearchBar } from 'react-native-elements';
+var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
 
 const PaiementPage = () => {  
   
@@ -38,44 +39,61 @@ const PaiementPage = () => {
   },[paid])
 
   const dentistPaid=(item,selectedyear)=>{
+
+    Alert.alert(
+      'Confirmer le paiement ?',
+      '',
+      [
+        {
+          text:'Confirmer',
+          onPress:()=>
+          {
+            setPaid(paid+1);
+            switch(selectedyear){
+              case '2018':
+                    firestore()
+                    .collection('Dentists')
+                    .doc(`${item.numero_inscription}`)
+                    .update({
+                      year2018:true,
+                    });
+                    break;
+              case '2019':
+                    firestore()
+                    .collection('Dentists')
+                    .doc(`${item.numero_inscription}`)
+                    .update({
+                      year2019:true,
+                    });
+                    break;
+              case '2020':
+                      firestore()
+                      .collection('Dentists')
+                      .doc(`${item.numero_inscription}`)
+                      .update({
+                        year2020:true,
+                      });
+                      break;
+              case '2021':
+                      firestore()
+                      .collection('Dentists')
+                      .doc(`${item.numero_inscription}`)
+                      .update({
+                        year2021:true,
+                      });
+                      break;
+              default:
+                break;
+            }
+          }
+        },
+        {
+          text:'ANNULER',
+        }
+      ]
+    )
     
-    setPaid(paid+1);
-    switch(selectedyear){
-      case '2018':
-            firestore()
-            .collection('Dentists')
-            .doc(`${item.numero_inscription}`)
-            .update({
-              year2018:true,
-            });
-            break;
-      case '2019':
-            firestore()
-            .collection('Dentists')
-            .doc(`${item.numero_inscription}`)
-            .update({
-              year2019:true,
-            });
-            break;
-      case '2020':
-              firestore()
-              .collection('Dentists')
-              .doc(`${item.numero_inscription}`)
-              .update({
-                year2020:true,
-              });
-              break;
-      case '2021':
-              firestore()
-              .collection('Dentists')
-              .doc(`${item.numero_inscription}`)
-              .update({
-                year2021:true,
-              });
-              break;
-      default:
-        break;
-    }
+    
  
   }
 
@@ -88,12 +106,11 @@ const PaiementPage = () => {
               null
             :
             <View style={attestationtypeContainer}>
-            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
-            <Text style={text}>Prénom : {item.prenom}</Text>
-            <Text style={text}>Nom : {item.nom}</Text>
-            
-            <View>
-            <Text style={text}>Doit payer</Text>  
+              <View style={{alignItems:'center'}}>
+                <Text style={text}> {item.numero_inscription}</Text>
+                <Text style={text}>{item.prenom} {item.nom}</Text>
+              </View>
+            <View> 
             <TouchableOpacity style={buttonStyle} 
             onPress={()=>dentistPaid(item,selectedyear)}>
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
@@ -106,12 +123,12 @@ const PaiementPage = () => {
                                 
               null
             :
-            <View style={attestationtypeContainer}>
-            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
-            <Text style={text}>Prénom : {item.prenom}</Text>
-            <Text style={text}>Nom : {item.nom}</Text>
-            <View>
-            <Text style={text}>Doit payer</Text>  
+          <View style={attestationtypeContainer}>
+            <View style={{alignItems:'center'}}>
+              <Text style={text}> {item.numero_inscription}</Text>
+              <Text style={text}>{item.prenom} {item.nom}</Text>
+            </View>
+          <View> 
             <TouchableOpacity style={buttonStyle} 
             onPress={()=>dentistPaid(item,selectedyear)}>
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
@@ -124,12 +141,12 @@ const PaiementPage = () => {
                                 
               null
             :
-            <View style={attestationtypeContainer}>
-            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
-            <Text style={text}>Prénom : {item.prenom}</Text>
-            <Text style={text}>Nom : {item.nom}</Text>
-            <View>
-            <Text style={text}>Doit payer</Text>  
+          <View style={attestationtypeContainer}>
+            <View style={{alignItems:'center'}}>
+              <Text style={text}> {item.numero_inscription}</Text>
+              <Text style={text}>{item.prenom} {item.nom}</Text>
+            </View>
+          <View> 
             <TouchableOpacity style={buttonStyle} 
             onPress={()=>dentistPaid(item,selectedyear)}>
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
@@ -143,11 +160,11 @@ const PaiementPage = () => {
               null
             :
             <View style={attestationtypeContainer}>
-            <Text style={text}>Numero d'inscription : {item.numero_inscription}</Text>
-            <Text style={text}>Prénom : {item.prenom}</Text>
-            <Text style={text}>Nom : {item.nom}</Text>
-            <View>
-            <Text style={text}>Doit payer</Text>  
+              <View style={{alignItems:'center'}}>
+                <Text style={text}> {item.numero_inscription}</Text>
+                <Text style={text}>{item.prenom} {item.nom}</Text>
+              </View>
+            <View> 
             <TouchableOpacity style={buttonStyle} 
             onPress={()=>dentistPaid(item,selectedyear)}>
                 <Text style={{fontSize:14,paddingTop:8,paddingLeft:4}}>Payé</Text>
@@ -190,9 +207,9 @@ const PaiementPage = () => {
         
         <View style={styles.containerForm}>
 
-            <View style={{alignSelf:'flex-end'}}>
+            {/* <View style={{alignSelf:'flex-end'}}>
                 <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>
-            </View>
+            </View> */}
 
             <View style={{width:'100%',marginBottom:10}}>
             <SearchBar  
@@ -282,6 +299,7 @@ const styles= StyleSheet.create({
       margin:10,
       padding:10,
       borderRadius:10,
+      width:vw*90,
   }
   ,
   text:{

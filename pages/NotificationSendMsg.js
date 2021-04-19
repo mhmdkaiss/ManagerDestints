@@ -1,5 +1,5 @@
 import React , {useState,useEffect} from 'react';
-import {View,Text, StyleSheet,Image, FlatList, TextInput} from 'react-native';
+import {View,Text, StyleSheet,Image, Alert, TextInput} from 'react-native';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import firestore from '@react-native-firebase/firestore';
@@ -24,19 +24,35 @@ import firestore from '@react-native-firebase/firestore';
 
     const sendData = async () => {
       //  console.log(route.params.numero);
+      Alert.alert(
+        "Etes-vous sûr d'envoyer cette notification ?",
+        '',
+        [
+          {
+            text:'Envoyer',
+            onPress:()=>
+            {
+              messagesArray.push(titleMsg);
+
+              firestore()
+              .collection('Dentists')
+              .doc(`${route.params.numero}`)
+              .update({
+                messages: messagesArray,
+              })
+        
+              alert('Notification envoyer');
+              // this.setState({titleMsg:'',message:''});
+              setTitleMsg('')
+            }
+          },
+          {
+            text:'ANNULER',
+          }
+        ]
+      )
       
-      messagesArray.push(titleMsg);
-
-      firestore()
-      .collection('Dentists')
-      .doc(`${route.params.numero}`)
-      .update({
-        messages: messagesArray,
-      })
-
-      alert('Notification envoyer');
-      // this.setState({titleMsg:'',message:''});
-      setTitleMsg('')
+  
       
     }
  

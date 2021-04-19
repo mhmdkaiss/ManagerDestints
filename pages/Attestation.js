@@ -89,8 +89,12 @@ const AttestationPage = () => {
           // alert(`Errorrr-> ${error}`);
           alert("Choisir fichier")
         } 
-     
-  
+  }
+
+  const DeleteNotification = async(item) => {
+    database()
+      .ref(`/users/${item.id}`)
+      .remove();
   }
 
 
@@ -123,6 +127,7 @@ const AttestationPage = () => {
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
         setfileUrl(downloadURL)   
         console.log('File available at', downloadURL);
+        alert('Fichier envoyé')
       })
             
     }
@@ -168,9 +173,12 @@ const AttestationPage = () => {
 
                             {item.envoyerMail ?
                             <View>
-                            <Button title={"Choisir fichier"} onPress={()=>choisir()}/>
-                            <View style={{height:10}}></View>
-                            <Button title={"Envoyer le fichier"} onPress={()=>sendAttestation(item)}/>
+                              <View style={{height:10}}></View>
+                              <Button title={"Choisir fichier"} onPress={()=>choisir()}/>
+                              <View style={{height:10}}></View>
+                              <Button title={"Envoyer le fichier"} onPress={()=>sendAttestation(item)}/>
+                              <View style={{height:10}}></View>
+                              <Button title={"Supprimer"} onPress={()=>DeleteNotification(item)}/>
                             </View>
                             :null
                             }

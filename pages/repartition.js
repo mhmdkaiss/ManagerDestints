@@ -1,5 +1,5 @@
 import React , {useState,useEffect} from 'react';
-import {View,Text, StyleSheet,TextInput,Button} from 'react-native';
+import {View,Text, StyleSheet,TextInput,Button,Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
 var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
@@ -50,21 +50,37 @@ const repartition = () => {
 
 
   const changeData=(libre,sante,chomeurs)=>{
-   
-      firestore()
-      .collection('Gouvernorat')
-      .doc(`${GouvernoratSelected}`)
-      .update({
-        [DelegationSelected] : [libre,sante,chomeurs]
-      })
-      .then(() => {
-        console.log('User updated!');
-      });
-   
-    alert('Data Envoyer');
-    setlibre('');
-    setsante('');
-    setchomeurs('');
+    
+    Alert.alert(
+      "Etes-vous sûr de modifier la répartition ? ",
+      '',
+      [
+        {
+          text:'Changer',
+          onPress:()=>
+          {
+            firestore()
+            .collection('Gouvernorat')
+            .doc(`${GouvernoratSelected}`)
+            .update({
+              [DelegationSelected] : [libre,sante,chomeurs]
+            })
+            .then(() => {
+              console.log('User updated!');
+            });
+         
+          alert('le changement a été effectué avec succes');
+          setlibre('');
+          setsante('');
+          setchomeurs('');
+          }
+        },
+        {
+          text:'ANNULER',
+        }
+      ]
+    )
+    
   }
 
 
@@ -97,7 +113,7 @@ const repartition = () => {
   }
   
     return (
-        <View style={{}}>
+        <View style={{backgroundColor:'white'}}>
         <View style={styles.pickerContainer}>
           <Picker
               onValueChange={(itemValue, itemIndex) => {
@@ -141,7 +157,7 @@ const repartition = () => {
         {renderData(DelegationSelected)}
       
       <View style={{marginTop:5*vw}} >
-        <Button title={'change'} onPress={()=>changeData(libre,sante,chomeurs)}/>
+        <Button title={'changer'} onPress={()=>changeData(libre,sante,chomeurs)}/>
       </View>
 
       </View>
@@ -164,7 +180,7 @@ const styles = StyleSheet.create({
     }
     ,
     input:{
-      backgroundColor:'rgb(237,237,200)',
+      backgroundColor:'rgb(237,237,237)',
       borderRadius:10,
       width:'40%',
     },

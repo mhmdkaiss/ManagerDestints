@@ -1,5 +1,5 @@
 import React ,{useState} from 'react';
-import {View,Text, StyleSheet,Image, TextInput} from 'react-native';
+import {View,Text, StyleSheet,Image, TextInput,Alert} from 'react-native';
 import database from '@react-native-firebase/database';
 import Header from '../components/Header';
 import Button from '../components/Button';
@@ -18,58 +18,66 @@ const ActualitePage = () => {
   const [filePath, setFilePath] = useState({});
   const [fileUrl, setfileUrl] = useState({});
 
-  const [Reference, setReference] = useState({});
-
-  
-  
-
   const sendData = async()=> {
 
-
-      const newReference = database()
-      .ref('/Actualite')
-      .push();
-
-      const Reference = newReference.key;
-
-          // Check if file selected
-          if (Object.keys(filePath).length == 0 ) 
+      Alert.alert(
+        "Etes-vous sûr d'envoyer cette actualité ? ",
+        '',
+        [
           {
-            newReference.set({
-              downloadExist : false,
-            });  
+            text:'Envoyer',
+            onPress:async()=>
+            {
+                  const newReference = database()
+                  .ref('/Actualite')
+                  .push();
             
+                  const Reference = newReference.key;
+                            // Check if file selected
+                    if (Object.keys(filePath).length == 0 ) 
+                    {
+                      newReference.set({
+                        downloadExist : false,
+                      });  
+                      
+                    }
+                    else{
+                            // Create Reference
+                        const path =filePath.uri;
+                        
+                        const result = await RNFetchBlob.fs.readFile(path,'base64');
+                        uploadFileToFirebaseStorage(Reference,result,filePath)
+                        }
+                      
+                    
+
+                if(titleMsg!='' && message!='')
+                {
+                  database()
+                  .ref(`/Actualite/${Reference}`)
+                  .update({
+                    titleMsg: titleMsg,
+                    message: message,
+                    fakeid: Reference,
+                  });
+                
+
+                  alert('Actualité envoyer');
+                  setTitleMsg('');
+                  setMessage('');
+                }
+                else{
+                  alert('Données manquantes')
+                }
+            }
+          },
+          {
+            text:'ANNULER',
           }
-          else{
-                  // Create Reference
-              const path =filePath.uri;
-              
-              const result = await RNFetchBlob.fs.readFile(path,'base64');
-              uploadFileToFirebaseStorage(Reference,result,filePath)
-              }
-            
+        ]
+      )
 
-  
-          
-
-      if(titleMsg!='' && message!='')
-      {
-        database()
-        .ref(`/Actualite/${Reference}`)
-        .update({
-          titleMsg: titleMsg,
-          message: message,
-          fakeid: Reference,
-        });
-      
-
-        alert('Actualité envoyer');
-        setTitleMsg('');
-        setMessage('');
-      }
-      else{
-        alert('Données manquantes')
-      }
+       
     
   }
 
@@ -128,8 +136,6 @@ const ActualitePage = () => {
     return (
         
         <View style={styles.containerForm}>
-
-          <Header Label={'Actualités'}/>
 
           <View style={styles.imageContainer}>
               <Image style={styles.imageStyle} source={require('../assets/Nord-Quest.png')}/>

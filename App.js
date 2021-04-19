@@ -33,11 +33,11 @@ function SearchStackScreen() {
     
         <HomeStack.Screen name="SearchPage" component={searchPage} options={{headerShown: false}} />
               <HomeStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
-        <HomeStack.Screen name="Attestation" component={AttestationPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="PaiementPage" component={PaiementPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="NotificationPage" component={NotificationPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="NotificationBroadcast" component={NotificationBroadcast} options={{headerShown: false}} />
-        <HomeStack.Screen name="NotificationSendMsgPage" component={NotificationSendMsgPage} options={{headerShown: false}} />    
+        <HomeStack.Screen name="Attestation" component={AttestationPage} options={{headerTitle: 'Attestation'}} />
+        <HomeStack.Screen name="PaiementPage" component={PaiementPage} options={{headerTitle: 'Paiement'}} />
+        <HomeStack.Screen name="NotificationPage" component={NotificationPage} options={{headerTitle: 'Notification '}} />
+        <HomeStack.Screen name="NotificationBroadcast" component={NotificationBroadcast} options={{headerTitle: null}} />
+        <HomeStack.Screen name="NotificationSendMsgPage" component={NotificationSendMsgPage} options={{headerTitle: null}} />    
         
    </HomeStack.Navigator>
   );
@@ -47,9 +47,9 @@ function HeartStackScreen() {
   return (
     <HomeStack.Navigator>
         <HomeStack.Screen name="HeartPage" component={HeartPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="ActualitePage" component={ActualitePage} options={{headerShown: false}} />
-        <HomeStack.Screen name="DocumentationPage" component={DocumentationPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="RepartitionPage" component={repartition} options={{headerShown: false}} />
+        <HomeStack.Screen name="ActualitePage" component={ActualitePage} options={{headerTitle: 'Actualités'}} />
+        <HomeStack.Screen name="DocumentationPage" component={DocumentationPage} options={{headerTitle: 'Documents'}} />
+        <HomeStack.Screen name="RepartitionPage" component={repartition} options={{headerTitle: 'Répartition'}} />
         <HomeStack.Screen name="InfoGeneralPage" component={InfoGeneral} options={{headerShown: false}} />
    </HomeStack.Navigator>
   );

@@ -44,7 +44,7 @@ import firestore from '@react-native-firebase/firestore';
               messages: addMessage,
             })
       }
-      alert('Msg envoyer');
+      alert('Message envoyer');
       setTitleMsg('')
     }
  

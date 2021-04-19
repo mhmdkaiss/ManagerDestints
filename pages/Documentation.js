@@ -155,7 +155,7 @@ const DocumentationPage = () => {
 
             // Delete the file
             desertRef.delete().then(() => {
-              // File deleted successfully
+              alert('Fichier supprimé')
             }).catch((error) => {
               // Uh-oh, an error occurred!
             });
@@ -166,14 +166,7 @@ const DocumentationPage = () => {
         }
       ]
     )
-        
-    //  //refresh
-    //  if(deleteitem==''){
-    //   setdeleteitem('refreshed');
-    // }
-    // if(deleteitem=="refreshed"){
-    //   setdeleteitem('');
-    // }
+  
       
   }
 
@@ -187,7 +180,7 @@ const DocumentationPage = () => {
             <Text
                 style={styles.itemname}
             >
-                 File Name: {item.name}
+               {item.name}
             </Text>
             <TouchableOpacity onPress={() => deleteitemfun(item.name)}>
               <MaterialIcons name={'delete'} style={styles.iconStyle} size={22}/>
@@ -238,12 +231,7 @@ const DocumentationPage = () => {
                 onPress={_chooseFile}
               >
                 <Text style={styles.buttonTextStyle}>
-                Choisir le fichier {"\n"}
-                (actuelle sélectionnée:{" "}
-                  {Object.keys(filePath).length == 0
-                    ? 0
-                    : 1}
-                  )
+                Choisir le fichier                 
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity

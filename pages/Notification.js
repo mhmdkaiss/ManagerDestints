@@ -70,7 +70,7 @@ const NotificationPage = ({navigation}) => {
       // Flat List Item
       <View style={{flexDirection:'row',justifyContent:'center'}}>
       <Text style={styles.itemStyle} onPress={() => getItem(item)}>
-        {item.email} {"\n"} Numero inscription : {item.numero_inscription}
+        {item.prenom} {item.nom} {"\n"} Numero inscription : {item.numero_inscription}
       </Text>
       </View>
     );

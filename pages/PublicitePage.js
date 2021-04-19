@@ -1,5 +1,5 @@
 import React , { useState ,useEffect }from 'react';
-import {View,Text, StyleSheet,Image, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import {View,Text, StyleSheet,Image, Alert, TouchableOpacity } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import Header from '../components/Header';
@@ -35,25 +35,40 @@ const PublicitePage = () => {
   };
 
   const _uploadFile = async () => {
-   
-    try {
-      // Check if file selected
-      if (Object.keys(filePath).length == 0 ) 
-        return alert("Veuillez remplir toutes les données");
-      // Create Reference
-      const path = filePath.uri;
-      
-      
-      const result = await RNFetchBlob.fs.readFile(path,'base64');
-      uploadFileToFirebaseStorage(result,filePath);
-      
-     
-      setFilePath({});
-    } catch (error) {
-      console.log("Error->", error);
-      alert(`Errorrr-> ${error}`);
-    }
 
+    Alert.alert(
+      "Etes-vous sûr d'ajouter une publicité ?",
+      '',
+      [
+        {
+          text:'Ajouter',
+          onPress:async()=>
+          {
+            try {
+              // Check if file selected
+              if (Object.keys(filePath).length == 0 ) 
+                return alert("Veuillez remplir toutes les données");
+              // Create Reference
+              const path = filePath.uri;
+              
+              
+              const result = await RNFetchBlob.fs.readFile(path,'base64');
+              uploadFileToFirebaseStorage(result,filePath);
+              
+             
+              setFilePath({});
+              alert('Publicité envoyée')
+            } catch (error) {
+              console.log("Error->", error);
+              alert(`Errorrr-> ${error}`);
+            }
+          }
+        },
+        {
+          text:'ANNULER',
+        }
+      ]
+    )
   };
 
   const uploadFileToFirebaseStorage = async (result,filePath) => {
