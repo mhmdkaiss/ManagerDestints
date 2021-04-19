@@ -34,7 +34,7 @@ const ActualitePage = () => {
             
                   const Reference = newReference.key;
                             // Check if file selected
-                    if (Object.keys(filePath).length == 0 ) 
+                    if (Object.keys(filePath).length == 0 && titleMsg!='' && message!='') 
                     {
                       newReference.set({
                         downloadExist : false,

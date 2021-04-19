@@ -43,7 +43,6 @@ const repartition = () => {
           
           setDelegationdata(arraydata)
           setDelegationNames(array)
-          console.log(arraydata)
   }));
     
   },[GouvernoratSelected,DelegationSelected]);
