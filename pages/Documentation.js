@@ -177,11 +177,15 @@ const DocumentationPage = () => {
       <View style={{ padding: 10 }}>
         
         <View style={styles.telechargeBtn} >
+        <TouchableOpacity onPress={() => getItem(item.path)}>
+              <MaterialIcons name={'cloud-download'} style={styles.iconStyle} size={22}/>
+            </TouchableOpacity>
             <Text
                 style={styles.itemname}
             >
                {item.name}
             </Text>
+         
             <TouchableOpacity onPress={() => deleteitemfun(item.name)}>
               <MaterialIcons name={'delete'} style={styles.iconStyle} size={22}/>
             </TouchableOpacity>
@@ -206,13 +210,13 @@ const DocumentationPage = () => {
 
   const getItem = async (fullPath) => {
     const url = await storage()
-      .ref(fullPath)
-      .getDownloadURL()
-      .catch((e) => {
-        console.error(e);
-      });
-    Linking.openURL(url);
-    console.log(url);
+            .ref(fullPath)
+            .getDownloadURL()
+            .catch((e) => {
+              console.error(e);
+            });
+      console.log(url)
+    // Linking.openURL(url);
   };
 
   return (
