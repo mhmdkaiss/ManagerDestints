@@ -216,7 +216,7 @@ const DocumentationPage = () => {
               console.error(e);
             });
       console.log(url)
-    // Linking.openURL(url);
+    Linking.openURL(url);
   };
 
   return (
